@@ -1,3 +1,5 @@
+Basic del repositorio:
+```bash
 Clonar el repositorio: 
    git clone https://github.com/MSalazarVil/IncoAnca_AppMovil.git
    cd IncoAnca_AppMovil
