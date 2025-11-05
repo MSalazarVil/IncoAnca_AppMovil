@@ -40,3 +40,16 @@
 * {
     font-family: "Inria Sans", sans-serif;
 }
+
+/* Limitar el ancho para pantallas móviles y centrar en pantallas grandes */
+:root {
+  --mobile-max-width: 420px; /* ancho máx. orientado a celulares */
+}
+
+@media (min-width: 421px) {
+  ion-router-outlet {
+    max-width: var(--mobile-max-width);
+    width: 100%;
+    margin: 0 auto; /* centra el área de la app */
+  }
+}

@@ -1,0 +1,27 @@
+.toolbar-perfil {
+  --background: #f6f6f6;
+  --color: #044C63;
+  --border-color: #d9d9d9;
+  --border-width: 0 0 1px 0;
+}
+
+.perfil-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0 16px;
+}
+
+.avatar {
+  width: 64px; height: 64px;
+  background: #e9f1f3;
+  border-radius: 50%;
+  display: grid; place-items: center;
+}
+.avatar ion-icon { font-size: 64px; color: #044C63; }
+
+.datos .nombre { font-weight: 700; font-size: 18px; }
+.datos .rol { color: #6b6b6b; }
+
+ion-list { margin-top: 8px; }
+ion-item ion-icon { --color: #044C63; color: #044C63; }

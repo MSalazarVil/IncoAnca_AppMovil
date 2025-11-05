@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,8 @@ export class HomePage implements OnInit {
   rol = '';
   segment = 'activos';
   buscar = '';
+  
+  constructor(private router: Router) {}
 
   ngOnInit() {
     // Recuperamos el nombre del usuario almacenado en localStorage (desde el login)
@@ -28,7 +31,7 @@ export class HomePage implements OnInit {
   }
 
   abrirPerfil() {
-    console.log('Abrir perfil de usuario');
+    this.router.navigate(['/perfil']);
   }
 
   get isEmpleado() { return this.rol === 'empleado'; }
