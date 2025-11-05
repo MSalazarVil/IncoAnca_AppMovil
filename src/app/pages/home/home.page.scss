@@ -34,6 +34,8 @@
 }
 
 .buscador-icon ion-icon { --color: #ffffff !important; color: #ffffff !important; font-size: 20px !important; }
+
+.buscador-icon svg { width: 20px; height: 20px; stroke: #ffffff; }
 /* Refuerzo para asegurar blanco en el SVG interno del ion-icon de búsqueda */
 .buscador-icon ion-icon::part(icon) { color: #ffffff !important; fill: #ffffff !important; }
 
