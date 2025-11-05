@@ -37,10 +37,29 @@
 /* Refuerzo para asegurar blanco en el SVG interno del ion-icon de búsqueda */
 .buscador-icon ion-icon::part(icon) { color: #ffffff !important; fill: #ffffff !important; }
 
-.buscador-campo { flex: 1; padding: 8px 10px !important; }
-.buscador-campo::part(native) { background: transparent; border: 0; box-shadow: none; }
-.buscador-campo input:focus {
+.buscador-campo {
+  flex: 1;
+  padding: 8px 10px !important;
+  /* Quitar subrayado/realce por defecto en focus */
+  --highlight-color: transparent;
+  --highlight-color-focused: transparent;
+  --border-color: transparent;
+  --border-color-focused: transparent;
+  text-decoration: none;
+}
+.buscador-campo::part(native) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
   outline: none;
+  text-decoration: none;
+}
+.buscador-campo input:focus,
+.buscador-campo:focus,
+.buscador-campo:focus-visible {
+  outline: none;
+  box-shadow: none;
+  text-decoration: none;
 }
 
 .accesos-rapidos {
@@ -86,6 +105,12 @@
   border-radius: 0;
 }
 
+/* Asegurar que no se muestre el indicador inferior del segmento */
+.seg-proyectos::part(indicator) {
+  background: transparent;
+  display: none;
+}
+
 .seg-proyectos ion-segment-button {
   /* No seleccionado */
   --background: transparent;
@@ -98,6 +123,19 @@
   border-right: none;
   border-radius: 0 !important;
   margin-left: -1px; /* evita borde doble entre botones */
+}
+
+/* Quitar subrayado/realce por foco en botones del segmento */
+.seg-proyectos ion-segment-button:focus,
+.seg-proyectos ion-segment-button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.seg-proyectos ion-segment-button::part(native) {
+  box-shadow: none;
+  outline: none;
 }
 
 .seg-proyectos ion-segment-button:first-child { margin-left: 0; }
