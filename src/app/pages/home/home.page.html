@@ -1,6 +1,6 @@
 <!-- Toolbar -->
 <ion-header>
-  <ion-toolbar class="toolbar-empleado">
+  <ion-toolbar class="toolbar-home">
     <!-- logo -->
     <ion-buttons slot="start">
       <img src="assets/img/logo.png" alt="Logo" class="logo-toolbar" />
@@ -8,7 +8,7 @@
 
     <!-- nombre de usuario -->
     <ion-title class="titulo-usuario">
-      {{ nombre }}
+      {{ primerNombre }}
     </ion-title>
 
     <!-- botón de perfil -->
@@ -22,6 +22,105 @@
 
 <!-- Contenido -->
 <ion-content class="ion-padding">
-  <h2>Bienvenido, {{ nombre }}</h2>
-  <p>Esta es la pantalla principal del empleado.</p>
+  <!-- Empleado: búsqueda, accesos y acciones -->
+  <ng-container *ngIf="isEmpleado">
+    <div class="buscador">
+      <div class="buscador-icon">
+        <ion-icon name="search-outline"></ion-icon>
+      </div>
+      <ion-input class="buscador-campo" [(ngModel)]="buscar" placeholder="Buscar un proyecto"></ion-input>
+    </div>
+
+    <div class="accesos-rapidos">
+      <ion-button fill="clear" class="tile">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <span>Documentos</span>
+      </ion-button>
+      <ion-button fill="clear" class="tile">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        <span>Observaciones</span>
+      </ion-button>
+      <ion-button fill="clear" class="tile">
+        <ion-icon name="bar-chart-outline"></ion-icon>
+        <span>Reportes</span>
+      </ion-button>
+      <ion-button fill="clear" class="tile">
+        <ion-icon name="people-outline"></ion-icon>
+        <span>Clientes</span>
+      </ion-button>
+    </div>
+
+    <ion-button expand="block" class="btn-nuevo-proyecto">
+      <ion-icon slot="start" name="add-outline"></ion-icon>
+      Agregar un nuevo proyecto
+    </ion-button>
+
+    <ion-segment [(ngModel)]="segment" class="seg-proyectos">
+      <ion-segment-button value="activos">Proyectos Activos</ion-segment-button>
+      <ion-segment-button value="terminados">Proyectos Terminados</ion-segment-button>
+    </ion-segment>
+
+    <div class="lista-titulo">Lista de proyectos {{ segment }}</div>
+
+    <div class="lista-proyectos">
+      <div class="card-proyecto" *ngFor="let _ of [1,2]">
+        <div class="card-header">
+          <div class="titulo">Puente Río Claro</div>
+          <div class="estado">Planificación</div>
+        </div>
+        <div class="progreso">
+          <ion-progress-bar value="0.85"></ion-progress-bar>
+          <span>85%</span>
+        </div>
+        <div class="acciones">
+          <div class="obs">Observaciones: <b>2</b></div>
+          <ion-button size="small" fill="outline">Ver Proyecto</ion-button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Cliente: encabezado y segmentación distinta -->
+  <ng-container *ngIf="isCliente">
+    <div class="titulo-cliente">Proyectos Contratados</div>
+
+    <div class="accesos-rapidos">
+      <ion-button fill="clear" class="tile">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <span>Documentos</span>
+      </ion-button>
+      <ion-button fill="clear" class="tile">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        <span>Observaciones</span>
+      </ion-button>
+      <ion-button fill="clear" class="tile">
+        <ion-icon name="bar-chart-outline"></ion-icon>
+        <span>Reportes</span>
+      </ion-button>
+    </div>
+
+    <ion-segment [(ngModel)]="segment" class="seg-proyectos">
+      <ion-segment-button value="activos">Activos</ion-segment-button>
+      <ion-segment-button value="terminados">Terminados</ion-segment-button>
+    </ion-segment>
+
+    <div class="lista-titulo">Lista de proyectos {{ segment }}</div>
+
+    <div class="lista-proyectos">
+      <div class="card-proyecto">
+        <div class="card-header">
+          <div class="titulo">Puente Río Claro</div>
+          <div class="estado">Planificación</div>
+        </div>
+        <div class="progreso">
+          <ion-progress-bar value="0.15"></ion-progress-bar>
+          <span>15%</span>
+        </div>
+        <div class="acciones">
+          <div class="obs">Observaciones: <b>2</b></div>
+          <ion-button size="small" fill="outline">Ver Proyecto</ion-button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </ion-content>

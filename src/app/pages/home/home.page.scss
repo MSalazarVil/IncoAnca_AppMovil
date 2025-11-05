@@ -1,10 +1,133 @@
 .toolbar-empleado {
-    --background-color: #044C63;
+    --background: #044C63;
+    --color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   
+  .toolbar-cliente {
+    --background: #0A7A4A;
+    --color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .buscador {
+    margin-top: 10px;
+    border: 1px solid #262626;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    background: transparent;
+  }
+
+  .buscador-icon {
+    width: 44px;
+    height: 100%;
+    background: #262626;
+    display: grid;
+    place-items: center;
+  }
+
+  .buscador-icon ion-icon { --color: #ffffff; color: #ffffff; font-size: 20px; }
+
+  .buscador-campo { flex: 1; padding: 0 10px; }
+  .buscador-campo::part(native) { background: transparent; border: 0; box-shadow: none; }
+
+  .accesos-rapidos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 10px 4px 14px;
+  }
+
+  .tile {
+    text-align: center;
+  }
+
+  .tile::part(native) {
+    background: #ffffff;
+    border: 1px solid #044C63;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    height: 84px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tile ion-icon {
+    --color: #044C63;
+    color: #044C63;
+    font-size: 24px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .tile span { color: #044C63; font-weight: 600; font-size: 12px; }
+
+  .btn-nuevo-proyecto { --background: #044C63; margin: 6px 4px 12px; }
+
+  .seg-proyectos {
+    margin: 6px 4px 8px;
+    /* Fondo del contenedor transparente y sin indicador */
+    --background: transparent;
+    --indicator-color: transparent;
+    border-radius: 0;
+  }
+
+  .seg-proyectos ion-segment-button {
+    /* No seleccionado */
+    --background: transparent;
+    --color: #000000;
+    /* Seleccionado */
+    --background-checked: #000000;
+    --color-checked: #ffffff;
+    /* Borde visible en no seleccionado */
+    border: 1px solid #000000;
+    border-right: none;
+    border-radius: 0 !important;
+    margin-left: -1px; /* evita borde doble entre botones */
+  }
+
+  .seg-proyectos ion-segment-button:first-child { margin-left: 0; }
+  .seg-proyectos ion-segment-button:last-child { border-right: 1px solid #000000; }
+
+  /* Mantener el mismo borde cuando está seleccionado */
+  .seg-proyectos ion-segment-button.segment-button-checked {
+    border: 1px solid #000000;
+  }
+  .seg-proyectos ion-segment-button.segment-button-checked:last-child {
+    border-right: 1px solid #000000;
+  }
+
+  .titulo-cliente { color: #044C63; font-weight: 700; font-size: 18px; margin: 8px 4px; }
+
+  .lista-titulo { margin: 10px 4px; font-weight: 600; }
+
+  .lista-proyectos { display: grid; gap: 12px; padding: 0 4px 16px; }
+
+  .card-proyecto {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  }
+
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .card-header .titulo { font-weight: 700; }
+  .card-header .estado { border: 1px solid #044C63; color: #044C63; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+
+  .progreso { display: flex; align-items: center; gap: 8px; }
+  .progreso ion-progress-bar { --progress-background: #1cb36b; --buffer-background: #e5e5e5; height: 8px; border-radius: 6px; flex: 1; }
+
+  .acciones { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .acciones .obs { color: #044C63; }
+
   .logo-toolbar {
     height: 40px;
     margin-left: 10px;
@@ -16,12 +139,27 @@
     text-align: center;
   }
   
-  ion-icon {
-    color: white;
-  }
+  ion-toolbar ion-icon { color: inherit; }
   
   ion-button {
     --padding-start: 0;
     --padding-end: 0;
   }
   
+  .toolbar-home {
+    --background: #f6f6f6;
+    --color: #044C63;
+    --border-color: #d9d9d9;
+    --border-width: 0 0 1px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Fondo de contenido del Home */
+  ion-content { --background: #f6f6f6; }
+
+  /* Oculta botones extras en el header dejando solo el de perfil */
+  .toolbar-home ion-buttons[slot="end"] ion-button:not(:last-child) {
+    display: none;
+  }
