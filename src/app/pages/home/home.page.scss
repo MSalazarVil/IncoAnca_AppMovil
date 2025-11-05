@@ -1,0 +1,27 @@
+.toolbar-empleado {
+    --background-color: #044C63;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo-toolbar {
+    height: 40px;
+    margin-left: 10px;
+  }
+  
+  .titulo-usuario {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  ion-icon {
+    color: white;
+  }
+  
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+  

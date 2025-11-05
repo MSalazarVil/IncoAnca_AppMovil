@@ -11,3 +11,12 @@ Subir un commit:
 
 Actualizar Local (si en caso ya tienes el repositorio ya clonado)
    git pull
+
+Levantar el servidor local:
+   ionic serve
+
+Crear una nueva página/activity:
+   ionic generate page pages/nombreActivity
+
+Instalar dependencias:
+   npm install

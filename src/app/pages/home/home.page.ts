@@ -3,13 +3,14 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-home-empleado',
-  templateUrl: './home-empleado.page.html',
-  styleUrls: ['./home-empleado.page.scss'],
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule],
 })
-export class HomeEmpleadoPage implements OnInit {
+
+export class HomePage implements OnInit {
   nombre = '';
 
   ngOnInit() {
@@ -19,7 +20,6 @@ export class HomeEmpleadoPage implements OnInit {
   }
 
   abrirPerfil() {
-    // Más adelante redirigirá al perfil del usuario
     console.log('Abrir perfil de usuario');
   }
 }

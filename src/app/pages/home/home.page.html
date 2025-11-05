@@ -1,13 +1,17 @@
+<!-- Toolbar -->
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar class="toolbar-empleado">
+    <!-- logo -->
     <ion-buttons slot="start">
       <img src="assets/img/logo.png" alt="Logo" class="logo-toolbar" />
     </ion-buttons>
 
+    <!-- nombre de usuario -->
     <ion-title class="titulo-usuario">
       {{ nombre }}
     </ion-title>
 
+    <!-- botón de perfil -->
     <ion-buttons slot="end">
       <ion-button (click)="abrirPerfil()">
         <ion-icon name="person-circle-outline" size="large"></ion-icon>
@@ -16,6 +20,7 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- Contenido -->
 <ion-content class="ion-padding">
   <h2>Bienvenido, {{ nombre }}</h2>
   <p>Esta es la pantalla principal del empleado.</p>

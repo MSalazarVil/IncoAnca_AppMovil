@@ -56,10 +56,10 @@ export class LoginPage {
       this.contrasena = ''; 
     } else if (user.rol === 'empleado') {
       localStorage.setItem('nombre', user['nombre'] || this.usuario);
-      this.router.navigate(['/home-empleado']);
+      this.router.navigate(['/home']);
     } else if (user.rol === 'cliente') {
       localStorage.setItem('nombre', user['nombre'] || this.usuario);
-      this.router.navigate(['/home-cliente']);
+      this.router.navigate(['/home']);
     } else {
       alert('Rol de usuario no reconocido');
     }
