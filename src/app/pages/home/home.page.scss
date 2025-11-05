@@ -34,6 +34,8 @@
 }
 
 .buscador-icon ion-icon { --color: #ffffff !important; color: #ffffff !important; font-size: 20px !important; }
+/* Refuerzo para asegurar blanco en el SVG interno del ion-icon de búsqueda */
+.buscador-icon ion-icon::part(icon) { color: #ffffff !important; fill: #ffffff !important; }
 
 .buscador-campo { flex: 1; padding: 8px 10px !important; }
 .buscador-campo::part(native) { background: transparent; border: 0; box-shadow: none; }
@@ -69,7 +71,7 @@
   color: #044C63;
   font-size: 24px;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .tile span { color: #044C63; font-weight: 600; font-size: 12px; }
