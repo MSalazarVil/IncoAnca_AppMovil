@@ -9,7 +9,12 @@
   align-items: center;
   justify-content: space-between;
 }
-  
+
+/* Contención de ancho para móviles: 95% del viewport */
+
+
+
+
 .toolbar-cliente {
   --background: #4CAF50;
   --color: #ffffff;
@@ -227,9 +232,10 @@ ion-button {
 }
 
   /* Fondo de contenido del Home */
-ion-content { --background: #f6f6f6; }
+
 
   /* Oculta botones extras en el header dejando solo el de perfil */
 .toolbar-home ion-buttons[slot="end"] ion-button:not(:last-child) {
   display: none;
 }
+

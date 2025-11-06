@@ -53,3 +53,26 @@
     margin: 0 auto; /* centra el Ã¡rea de la app */
   }
 }
+/* Espaciado global y contención del contenido */
+ion-content {
+  --background: #f6f6f6;
+  background: #f6f6f6;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 12px;
+  --padding-bottom: 16px;
+}
+
+/* Todos los elementos directos dentro de ion-content ocupan 95% */
+ion-content > * {
+  width: 95%;
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Evitar desbordes horizontales de cualquier hijo */
+ion-content * {
+  box-sizing: border-box;
+  max-width: 100%;
+}
