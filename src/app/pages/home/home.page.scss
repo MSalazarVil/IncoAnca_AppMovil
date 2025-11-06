@@ -1,4 +1,8 @@
 .toolbar-empleado {
+}
+
+.tile .tile-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+.toolbar-empleado {
   --background: #044C63;
   --color: #ffffff;
   display: flex;
