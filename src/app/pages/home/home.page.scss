@@ -166,6 +166,8 @@
 .seg-proyectos ion-segment-button::part(native) {
   box-shadow: none;
   outline: none;
+  font-size: 14px;            /* tamaño de texto */
+  text-transform: capitalize;  /* primera letra mayúscula */
 }
 
 .seg-proyectos ion-segment-button:first-child { margin-left: 0; }

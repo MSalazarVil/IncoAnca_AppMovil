@@ -1,35 +1,50 @@
-<ion-header>
+﻿<ion-header>
   <ion-toolbar class="toolbar-perfil">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Perfil</ion-title>
+    <ion-title>Mi Perfil</ion-title>
   </ion-toolbar>
-  </ion-header>
+</ion-header>
 
-<ion-content class="ion-padding">
-  <div class="perfil-header">
-    <ion-avatar class="avatar">
-      <ion-icon name="person-circle-outline"></ion-icon>
-    </ion-avatar>
-    <div class="datos">
-      <div class="nombre">{{ nombre }}</div>
-      <div class="rol">{{ rol | titlecase }}</div>
+<ion-content>
+  <div class="perfil-card">
+    <div class="perfil-top">
+      <div class="avatar">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </div>
+      <div class="datos">
+        <div class="nombre">{{ nombre }}</div>
+        <div class="rol-pill">{{ rol | titlecase }}</div>
+      </div>
     </div>
+
+    <div class="perfil-info">
+      <div class="info-row">
+        <ion-icon name="person-outline"></ion-icon>
+        <div class="label">Nombre</div>
+        <div class="value">{{ nombre }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="id-card-outline"></ion-icon>
+        <div class="label">Rol</div>
+        <div class="value">{{ rol | titlecase }}</div>
+      </div>
+    </div>
+
+    <div class="perfil-actions">
+      <ion-button fill="outline">
+        <ion-icon name="pencil-outline" slot="start"></ion-icon>
+        Editar perfil
+      </ion-button>
+      <ion-button fill="outline">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        Cambiar contraseña
+      </ion-button>
+    </div>
+
+    <ion-button expand="block" color="danger" (click)="cerrarSesion()" class="btn-salir">
+      Cerrar sesión
+    </ion-button>
   </div>
-
-  <ion-list inset>
-    <ion-item button detail>
-      <ion-icon name="pencil-outline" slot="start"></ion-icon>
-      <ion-label>Editar perfil</ion-label>
-    </ion-item>
-    <ion-item button detail>
-      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-      <ion-label>Cambiar contraseña</ion-label>
-    </ion-item>
-  </ion-list>
-
-  <ion-button expand="block" color="danger" (click)="cerrarSesion()">
-    Cerrar sesión
-  </ion-button>
 </ion-content>

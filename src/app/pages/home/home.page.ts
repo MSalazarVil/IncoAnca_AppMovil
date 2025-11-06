@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,8 +18,8 @@ export class HomePage implements OnInit {
   segment = 'activos';
   buscar = '';
   activos = [
-    { titulo: 'Puente Rio Claro', estado: 'Planificacion', progreso: 0.25, obs: 2 },
-    { titulo: 'Puente Rio Claro', estado: 'Planificacion', progreso: 0.25, obs: 2 },
+    { titulo: 'Puente Río Claro', estado: 'Planificación', progreso: 0.25, obs: 2 },
+    { titulo: 'Puente Río Claro', estado: 'Planificación', progreso: 0.25, obs: 2 },
   ];
   terminados = [
     { titulo: 'Edificio Administrativo', estado: 'Finalizado' },
@@ -51,5 +51,6 @@ export class HomePage implements OnInit {
     return parts[0] || n;
   }
 }
+
 
 

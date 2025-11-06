@@ -5,23 +5,30 @@
   --border-width: 0 0 1px 0;
 }
 
-.perfil-header {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin: 12px 0 16px;
+.perfil-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  padding: 16px;
+  margin: 12px auto;
 }
 
-.avatar {
-  width: 64px; height: 64px;
-  background: #e9f1f3;
-  border-radius: 50%;
-  display: grid; place-items: center;
-}
-.avatar ion-icon { font-size: 64px; color: #044C63; }
+.perfil-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 
-.datos .nombre { font-weight: 700; font-size: 18px; }
-.datos .rol { color: #6b6b6b; }
+.avatar { width: 72px; height: 72px; background: #e9f1f3; border-radius: 50%; display: grid; place-items: center; }
+.avatar ion-icon { font-size: 72px; color: #044C63; }
 
-ion-list { margin-top: 8px; }
-ion-item ion-icon { --color: #044C63; color: #044C63; }
+.datos .nombre { font-weight: 800; font-size: 18px; color: #262626; }
+.rol-pill { display: inline-block; margin-top: 4px; border: 1px solid #044C63; color: #044C63; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+
+.perfil-info { display: grid; gap: 8px; margin: 12px 0; }
+.info-row { display: grid; grid-template-columns: 24px 1fr auto; align-items: center; gap: 8px; background: #fafafa; border: 1px solid #eeeeee; border-radius: 8px; padding: 8px 10px; }
+.info-row ion-icon { color: #044C63; }
+.info-row .label { color: #6b6b6b; font-size: 12px; }
+.info-row .value { color: #262626; font-weight: 600; }
+
+.perfil-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.perfil-actions ion-button::part(native) { border-color: #cfd8dc; }
+
+.btn-salir { margin-top: 12px; }
