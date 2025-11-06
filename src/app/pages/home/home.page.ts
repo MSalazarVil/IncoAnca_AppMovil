@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+ï»¿import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,8 +18,8 @@ export class HomePage implements OnInit {
   segment = 'activos';
   buscar = '';
   activos = [
-    { titulo: 'Puente Río Claro', estado: 'Planificación', progreso: 0.25, obs: 2 },
-    { titulo: 'Puente Río Claro', estado: 'Planificación', progreso: 0.25, obs: 2 },
+    { titulo: 'Puente RÃ­o Claro', estado: 'PlanificaciÃ³n', progreso: 0.25, obs: 2 },
+    { titulo: 'Puente RÃ­o Claro', estado: 'PlanificaciÃ³n', progreso: 0.25, obs: 2 },
   ];
   terminados = [
     { titulo: 'Edificio Administrativo', estado: 'Finalizado' },
@@ -40,10 +40,6 @@ export class HomePage implements OnInit {
 
   abrirPerfil() {
     this.router.navigate(['/perfil']);
-  }
-
-  irClientes() {
-    this.router.navigate(["/empleado/clientes"]);
   }
 
   get isEmpleado() { return this.rol === 'empleado'; }

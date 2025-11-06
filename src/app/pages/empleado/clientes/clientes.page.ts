@@ -1,39 +1,20 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
-import { FirebaseService } from '../../../services/firebase.service';
+import { FormsModule } from '@angular/forms';
+import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.page.html',
   styleUrls: ['./clientes.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class ClientesPage implements OnInit {
-  cargando = true;
-  clientes: any[] = [];
 
-  constructor(private fb: FirebaseService) {}
+  constructor() { }
 
-  async ngOnInit() {
-    await this.cargar();
+  ngOnInit() {
   }
 
-  async cargar() {
-    this.cargando = true;
-    const lista = await this.fb.listarClientes();
-    // Enriquecer con empresa: usa empresaAsociada (id o ruta) o busca por representante
-    this.clientes = await Promise.all(lista.map(async (c: any) => {
-      let empresa = null;
-      if (c.empresaAsociada) {
-        empresa = await this.fb.getEmpresaPorPath(c.empresaAsociada);
-      }
-      if (!empresa) {
-        empresa = await this.fb.getEmpresaPorRepresentante(c.id);
-      }
-      return { ...c, empresa };
-    }));
-    this.cargando = false;
-  }
 }
