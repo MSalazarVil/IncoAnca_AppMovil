@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { FirebaseService } from "../../services/firebase.service";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-home",
@@ -13,18 +14,23 @@ import { FirebaseService } from "../../services/firebase.service";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterLink],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   nombreUsuario = "";
   rol = "";
   segmentoSeleccionado: string = "activos";
   proyectosActivos: any[] = [];
   proyectosTerminados: any[] = [];
+  private userSubscription: Subscription | undefined;
+  private responsableId: string | undefined;
+  searchTerm: string = '';
+  allProyectos: any[] = [];
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private firebaseService: FirebaseService
   ) {}
+
 
   ngOnInit() {
     this.authService.getUserName().subscribe((name) => {
@@ -41,33 +47,40 @@ export class HomePage implements OnInit {
   async loadProyectos() {
     console.log("Cargando proyectos...");
     try {
-      // Obtener ID de documento del empleado logueado (asegurarse que sea el ID del documento en Firebase)
       const employeeDocId = localStorage.getItem("userId");
       if (!employeeDocId) {
-        console.warn("No se encontró ID de documento del empleado en localStorage.");
+        console.warn(
+          "No se encontró ID de documento del empleado en localStorage."
+        );
         return;
       }
-      const allProyectos = await this.firebaseService.getProyectosPorResponsable(employeeDocId);
-      console.log("Proyectos obtenidos de Firebase para el empleado con ID de documento:", employeeDocId, allProyectos);
-      // Process each project to determine the number of observations
-      const proyectosConObservaciones = allProyectos.map((proyecto: any) => {
-        // Assuming 'observacion' is a single DocumentReference or undefined
-        const numObservaciones = proyecto.observacion ? 1 : 0;
-        return { ...proyecto, numObservaciones };
-      });
-
-      // Filtrar proyectos según el estado registrado en Firebase (minúsculas)
-      this.proyectosActivos = proyectosConObservaciones.filter(
-        (proyecto: any) => proyecto.estado === "activo"
+      this.allProyectos =
+        await this.firebaseService.getProyectosPorResponsable(employeeDocId);
+      console.log(
+        "Proyectos obtenidos de Firebase para el empleado con ID de documento:",
+        employeeDocId,
+        this.allProyectos
       );
-      this.proyectosTerminados = proyectosConObservaciones.filter(
-        (proyecto: any) => proyecto.estado === "finalizado"
-      );
-      console.log("Proyectos activos:", this.proyectosActivos);
-      console.log("Proyectos terminados:", this.proyectosTerminados);
+      this.filterProyectos();
     } catch (error) {
       console.error("Error al cargar proyectos:", error);
     }
+  }
+
+  filterProyectos() {
+    const searchTermLower = this.searchTerm.toLowerCase();
+    const filteredProyectos = this.allProyectos.filter((proyecto: any) =>
+      proyecto.nombre.toLowerCase().includes(searchTermLower)
+    );
+
+    this.proyectosActivos = filteredProyectos.filter(
+      (proyecto: any) => proyecto.estado === "activo"
+    );
+    this.proyectosTerminados = filteredProyectos.filter(
+      (proyecto: any) => proyecto.estado === "finalizado"
+    );
+    console.log("Proyectos activos filtrados:", this.proyectosActivos);
+    console.log("Proyectos terminados filtrados:", this.proyectosTerminados);
   }
 
   navigateAndBlur(path: string | any[]) {
@@ -92,6 +105,10 @@ export class HomePage implements OnInit {
   get isEmpleado() {
     return this.rol === "empleado";
   }
+  ngOnDestroy(): void {
+    this.userSubscription?.unsubscribe();
+  }
+
   get isCliente() {
     return this.rol === "cliente";
   }

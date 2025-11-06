@@ -181,6 +181,46 @@
   margin-right: 8px !important;
 }
 
+/* Estilos para la sección de añadir proyecto */
+.add-project-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--ion-color-light);
+  border-radius: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--ion-box-shadow-medium);
+}
+
+.new-project-input {
+  --background: var(--ion-color-light);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 10px;
+  color: var(--ion-color-dark);
+}
+
+.btn-add-project {
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
+  --background-activated: var(--ion-color-primary-tint);
+  --color: var(--ion-color-light);
+  --border-radius: 10px;
+  height: 48px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-add-project ion-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
 /* Botones genéricos */
 ion-button {
   --border-radius: 16px !important;

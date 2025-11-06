@@ -8,6 +8,9 @@ import {
   doc,
   getDoc,
   addDoc,
+  collectionGroup,
+  getAggregateFromServer,
+  count,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { environment } from "../../environments/environment";
@@ -114,21 +117,83 @@ export class FirebaseService {
     const docRef = doc(this.db, "proyectos", proyectoId);
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) return null;
-    return { id: docSnap.id, ...docSnap.data() } as any;
+
+    const observacionesRef = collection(
+      this.db,
+      "proyectos",
+      proyectoId,
+      "observaciones"
+    );
+    const snapshot = await getAggregateFromServer(observacionesRef, {
+      count: count(),
+    });
+    const numObservaciones = snapshot.data().count;
+
+    return { id: docSnap.id, ...docSnap.data(), numObservaciones } as any;
   }
 
   async getProyectosPorResponsable(userId: string) {
     if (!userId) return [];
     try {
       const proyectosRef = collection(this.db, "proyectos");
-      // Crear referencia al documento del empleado responsable
       const responsableRef = doc(this.db, "Empleados", userId);
-      // Filtrar proyectos por referencia de responsable
-      const qProyectos = query(proyectosRef, where("responsable", "==", responsableRef));
+      const qProyectos = query(
+        proyectosRef,
+        where("responsable", "==", responsableRef)
+      );
       const snap = await getDocs(qProyectos);
-      return snap.docs.map((d) => ({ id: d.id, ...d.data() })) as any[];
+      const proyectos = await Promise.all(
+        snap.docs.map(async (d) => {
+          const proyectoId = d.id;
+          const observacionesRef = collection(
+            this.db,
+            "proyectos",
+            proyectoId,
+            "observacion"
+          );
+          const snapshot = await getAggregateFromServer(observacionesRef, {
+            count: count(),
+          });
+          const numObservaciones = snapshot.data().count;
+          return { id: d.id, ...d.data(), numObservaciones };
+        })
+      );
+      return proyectos as any[];
     } catch (error) {
       console.error("Error al obtener proyectos por responsable:", error);
+      return [];
+    }
+  }
+
+  async getObservacionesByProyectoId(proyectoId: string) {
+    if (!proyectoId) {
+      console.log("getObservacionesByProyectoId: proyectoId es nulo o vacío.");
+      return [];
+    }
+    try {
+      console.log(
+        "getObservacionesByProyectoId: Buscando observaciones para proyectoId:",
+        proyectoId
+      );
+      const observacionesRef = collection(
+        this.db,
+        "proyectos",
+        proyectoId,
+        "observacion"
+      );
+      const snap = await getDocs(observacionesRef);
+      console.log(
+        "getObservacionesByProyectoId: Documentos de observaciones encontrados:",
+        snap.docs.length
+      );
+      if (snap.empty) {
+        console.log(
+          "getObservacionesByProyectoId: No se encontraron observaciones para el proyectoId: 2Wqw6XA8hY4tyBaaPajb"
+        );
+      }
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() })) as any[];
+    } catch (error) {
+      console.error("Error al obtener observaciones por proyecto:", error);
       return [];
     }
   }
@@ -144,9 +209,16 @@ export class FirebaseService {
     }
   }
 
-  async createProject(projectData: any) {
+  async createProject(nombreProyecto: string, userId: string) {
     try {
       const proyectosRef = collection(this.db, "proyectos");
+      const responsableRef = doc(this.db, "Empleados", userId);
+      const projectData = {
+        nombre: nombreProyecto,
+        estado: "activo", // O el estado inicial que desees
+        responsable: responsableRef,
+        fechaCreacion: new Date(),
+      };
       await addDoc(proyectosRef, projectData);
       console.log("Proyecto añadido a Firestore:", projectData);
     } catch (error) {

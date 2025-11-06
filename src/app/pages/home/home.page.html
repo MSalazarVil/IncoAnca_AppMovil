@@ -23,6 +23,8 @@
       class="custom-searchbar"
       placeholder="Buscar un proyecto"
       aria-label="Buscar proyectos"
+      [(ngModel)]="searchTerm"
+      (ionInput)="filterProyectos()"
     ></ion-searchbar>
 
     <div class="accesos-rapidos">
@@ -111,7 +113,9 @@
           </div>
 
           <div class="acciones">
-            <span class="obs">Observaciones: {{ proyecto.numObservaciones }}</span>
+            <span class="obs"
+              >Observaciones: {{ proyecto.numObservaciones }}</span
+            >
             <ion-button
               class="btn-ver-link"
               fill="clear"

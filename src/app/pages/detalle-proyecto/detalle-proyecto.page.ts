@@ -55,26 +55,21 @@ export class DetalleProyectoPage implements OnInit, OnDestroy {
   async loadProyectoDetails() {
     console.log('DetalleProyectoPage: loadProyectoDetails llamado');
     if (this.proyectoId) {
-      this.proyecto = await this.firebaseService.getProyectoById(this.proyectoId);
-      console.log('DetalleProyectoPage: Proyecto encontrado:', this.proyecto);
+        this.proyecto = await this.firebaseService.getProyectoById(this.proyectoId);
+        console.log('DetalleProyectoPage: Proyecto encontrado:', this.proyecto);
 
-      if (this.proyecto && this.proyecto.observacion) {
-        // Assuming proyecto.observacion is a DocumentReference
-        const observacionDoc = await this.firebaseService.getDocumentByRef(this.proyecto.observacion);
-        if (observacionDoc) {
-          this.proyecto.observaciones = [observacionDoc]; // Make it an array for *ngFor
+        if (this.proyecto) {
+          this.proyecto.observaciones = await this.firebaseService.getObservacionesByProyectoId(this.proyectoId);
+          console.log('DetalleProyectoPage: Observaciones vinculadas:', this.proyecto.observaciones);
         } else {
           this.proyecto.observaciones = [];
         }
-      } else {
-        this.proyecto.observaciones = [];
-      }
 
-      if (!this.proyecto) {
-        console.log('DetalleProyectoPage: Proyecto no encontrado, redirigiendo a /home');
-        this.router.navigateByUrl('/home', { replaceUrl: true });
-      }
-    } else {
+        if (!this.proyecto) {
+          console.log('DetalleProyectoPage: Proyecto no encontrado, redirigiendo a /home');
+          this.router.navigateByUrl('/home', { replaceUrl: true });
+        }
+      } else {
       console.log('DetalleProyectoPage: No hay proyectoId, redirigiendo a /home');
       this.router.navigateByUrl('/home', { replaceUrl: true });
     }
