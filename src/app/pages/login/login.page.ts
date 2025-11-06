@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,41 +34,36 @@ export class LoginPage {
     this.errorUsuario = '';
     this.errorContrasena = '';
 
-    // Validar campos vacÃ­os antes de consultar al Firestore
+    // Validar campos vacíos antes de consultar al Firestore
     if (!this.usuario.trim() || !this.contrasena.trim()) {
       if (!this.usuario.trim()) {
         this.errorUsuario = 'Ingrese su usuario';
       }
       if (!this.contrasena.trim()) {
-        this.errorContrasena = 'Ingrese su contraseÃ±a';
+        this.errorContrasena = 'Ingrese su contraseña';
       }
       return;
     }
 
-    const user: any = await this.firebaseService.login(this.usuario, this.contrasena);
+    const user: UserResponse = await this.firebaseService.login(this.usuario, this.contrasena);
 
     if (user['error'] === 'usuario_no_encontrado') {
       this.errorUsuario = 'Usuario no encontrado';
       this.usuario = ''; 
       this.contrasena = ''; 
     } else if (user['error'] === 'contrasena_incorrecta') {
-      this.errorContrasena = 'ContraseÃ±a incorrecta';
+      this.errorContrasena = 'Contraseña incorrecta';
       this.contrasena = ''; 
     } else if (user.rol === 'empleado') {
-      localStorage.setItem('userId', user.id || '');
       localStorage.setItem('nombre', user['nombre'] || this.usuario);
       localStorage.setItem('rol', user.rol);
-      localStorage.setItem('empresaAsociada', user.empresaAsociada || '');
       this.router.navigate(['/home']);
     } else if (user.rol === 'cliente') {
-      localStorage.setItem('userId', user.id || '');
       localStorage.setItem('nombre', user['nombre'] || this.usuario);
       localStorage.setItem('rol', user.rol);
-      localStorage.setItem('empresaAsociada', user.empresaAsociada || '');
       this.router.navigate(['/home']);
     } else {
       alert('Rol de usuario no reconocido');
     }
   }
 }
-
