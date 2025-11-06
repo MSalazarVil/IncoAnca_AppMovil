@@ -1,152 +1,149 @@
-<!-- Toolbar -->
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar class="toolbar-home">
-    <!-- logo -->
     <ion-buttons slot="start">
-      <img src="assets/img/logo.png" alt="Logo" class="logo-toolbar" />
+      <img src="assets/img/logo.png" alt="Logo" class="toolbar-logo" />
     </ion-buttons>
-
-    <!-- nombre de usuario -->
-    <ion-title class="titulo-usuario">
-      {{ primerNombre }}
-    </ion-title>
-
-    <!-- botón de perfil -->
+    <ion-title class="ion-text-center">Usuario Ingeniero</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="abrirPerfil()">
-        <ion-icon src="assets/icons/user-circle.svg" size="large"></ion-icon>
+      <ion-button
+        (click)="navigateAndBlur('/profile')"
+        aria-label="Perfil de usuario"
+      >
+        <ion-icon src="assets/icons/user-circle.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<!-- Contenido -->
-<ion-content class="ion-padding">
-  <!-- Empleado: búsqueda, accesos y acciones -->
-  <ng-container *ngIf="isEmpleado">
-    <div class="buscador">
-      <div class="buscador-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
-      </div>
-      <ion-input class="buscador-campo" [(ngModel)]="buscar" placeholder="Buscar un proyecto"></ion-input>
-    </div>
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <ion-searchbar
+      class="custom-searchbar"
+      placeholder="Buscar un proyecto"
+      aria-label="Buscar proyectos"
+    ></ion-searchbar>
 
     <div class="accesos-rapidos">
-      <ion-button fill="clear" class="tile">
-        <div class="tile-content">
-          <ion-icon src="assets/icons/file-description.svg"></ion-icon>
-          <span>Documentos</span>
-        </div>
+      <ion-button
+        class="tile"
+        expand="block"
+        fill="clear"
+        (click)="navigateAndBlur('/documentos')"
+        aria-label="Ver documentos"
+      >
+        <ion-icon src="assets/icons/file-description.svg"></ion-icon>
+        <span>Documentos</span>
       </ion-button>
-      <ion-button fill="clear" class="tile">
-        <div class="tile-content">
-          <ion-icon src="assets/icons/message.svg"></ion-icon>
-          <span>Observaciones</span>
-        </div>
+      <ion-button
+        class="tile"
+        expand="block"
+        fill="clear"
+        (click)="navigateAndBlur('/observaciones')"
+        aria-label="Ver observaciones"
+      >
+        <ion-icon src="assets/icons/message.svg"></ion-icon>
+        <span>Observaciones</span>
       </ion-button>
-      <ion-button fill="clear" class="tile"><div class="tile-content"><ion-icon src="assets/icons/chart-bar-popular.svg"></ion-icon>
-        <span>Reportes</span></div></ion-button>
-      <ion-button fill="clear" class="tile" routerLink="/clientes"><div class="tile-content"><ion-icon src="assets/icons/users.svg"></ion-icon>
-        <span>Clientes</span></div></ion-button>
+      <ion-button
+        class="tile"
+        expand="block"
+        fill="clear"
+        (click)="navigateAndBlur('/reportes')"
+        aria-label="Ver reportes"
+      >
+        <ion-icon src="assets/icons/chart-bar-popular.svg"></ion-icon>
+        <span>Reportes</span>
+      </ion-button>
+      <ion-button
+        class="tile"
+        expand="block"
+        fill="clear"
+        (click)="navigateAndBlur('/clientes')"
+        aria-label="Ver clientes"
+      >
+        <ion-icon src="assets/icons/users.svg"></ion-icon>
+        <span>Clientes</span>
+      </ion-button>
     </div>
 
-    <ion-button expand="block" class="btn-nuevo-proyecto">
+    <ion-button
+      class="btn-nuevo-proyecto"
+      expand="block"
+      (click)="navigateAndBlur('/nuevo-proyecto')"
+      aria-label="Agregar nuevo proyecto"
+    >
       <ion-icon slot="start" src="assets/icons/plus.svg"></ion-icon>
-      Agregar un nuevo proyecto
+      Agregar Nuevo Proyecto
     </ion-button>
 
-    <ion-segment [(ngModel)]="segment" class="seg-proyectos">
-      <ion-segment-button value="activos">Proyectos Activos</ion-segment-button>
-      <ion-segment-button value="terminados">Proyectos Terminados</ion-segment-button>
+    <h2 class="lista-titulo">
+      Lista de proyectos {{ segmentoSeleccionado === 'activos' ? 'activos' :
+      'terminados' }}
+    </h2>
+
+    <ion-segment
+      [(ngModel)]="segmentoSeleccionado"
+      class="seg-proyectos"
+      mode="md"
+    >
+      <ion-segment-button value="activos">
+        <ion-label>Proyectos Activos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="terminados">
+        <ion-label>Proyectos Terminados</ion-label>
+      </ion-segment-button>
     </ion-segment>
 
-    <div class="lista-titulo">Lista de proyectos {{ segment }}</div>
-
-    <ng-container *ngIf="segment === 'activos'">
-      <div class="lista-proyectos">
-        <div class="card-proyecto" *ngFor="let p of activos">
+    <div class="lista-proyectos">
+      <!-- Proyectos Activos -->
+      <ng-container *ngIf="segmentoSeleccionado === 'activos'">
+        <ion-card
+          class="card-proyecto"
+          *ngFor="let proyecto of proyectosActivos"
+        >
           <div class="card-header">
-            <div class="titulo">{{ p.titulo }}</div>
-            <div class="estado">{{ p.estado }}</div>
+            <h3 class="titulo">{{ proyecto.nombre }}</h3>
+            <span class="estado">{{ proyecto.estado }}</span>
           </div>
           <div class="progreso">
-            <ion-progress-bar [value]="p.progreso"></ion-progress-bar>
-            <span>{{ (p.progreso * 100) | number:'1.0-0' }}%</span>
+            <ion-progress-bar
+              [value]="proyecto.progreso / 100"
+            ></ion-progress-bar>
+            <span>{{ proyecto.progreso }}%</span>
           </div>
           <div class="acciones">
-            <div class="obs">Observaciones: <b>{{ p.obs }}</b></div>
-            <ion-button fill="clear" class="btn-ver-link">VER PROYECTO</ion-button>
+            <span class="obs">Observaciones: {{ proyecto.observaciones }}</span>
+            <ion-button
+              class="btn-ver-link"
+              fill="clear"
+              size="small"
+              (click)="navigateAndBlur(['/detalle-proyecto', proyecto.id])"
+            >
+              Ver
+            </ion-button>
           </div>
-        </div>
-      </div>
-    </ng-container>
+        </ion-card>
+      </ng-container>
 
-    <ng-container *ngIf="segment === 'terminados'">
-      <div class="lista-proyectos">
-        <div class="card-proyecto" *ngFor="let p of terminados">
-          <div class="card-row">
-            <div class="card-main">
-              <div class="titulo">{{ p.titulo }}</div>
-              <div class="estado estado-fin">{{ p.estado }}</div>
-            </div>
-            <ion-button class="btn-ver" fill="solid">Ver Proyecto</ion-button>
+      <!-- Proyectos Terminados -->
+      <ng-container *ngIf="segmentoSeleccionado === 'terminados'">
+        <ion-card
+          class="card-proyecto card-row"
+          *ngFor="let proyecto of proyectosTerminados"
+        >
+          <div class="card-main">
+            <h3 class="titulo">{{ proyecto.nombre }}</h3>
+            <span class="estado estado-fin">{{ proyecto.estado }}</span>
           </div>
-        </div>
-      </div>
-    </ng-container>
-  </ng-container>
-
-  <!-- Cliente: encabezado y segmentación distinta -->
-  <ng-container *ngIf="isCliente">
-    <div class="titulo-cliente">Proyectos Contratados</div>
-
-    <div class="accesos-rapidos">
-      <ion-button fill="clear" class="tile"><div class="tile-content"><ion-icon src="assets/icons/file-description.svg"></ion-icon>
-        <span>Documentos</span></div></ion-button>
-      <ion-button fill="clear" class="tile"><div class="tile-content"><ion-icon src="assets/icons/message.svg"></ion-icon>
-        <span>Observaciones</span></div></ion-button>
-      <ion-button fill="clear" class="tile"><div class="tile-content"><ion-icon src="assets/icons/chart-bar-popular.svg"></ion-icon>
-        <span>Reportes</span></div></ion-button>
+          <ion-button
+            class="btn-ver"
+            size="small"
+            (click)="navigateAndBlur(['/detalle-proyecto', proyecto.id])"
+          >
+            Ver
+          </ion-button>
+        </ion-card>
+      </ng-container>
     </div>
-
-    <ion-segment [(ngModel)]="segment" class="seg-proyectos">
-      <ion-segment-button value="activos">Activos</ion-segment-button>
-      <ion-segment-button value="terminados">Terminados</ion-segment-button>
-    </ion-segment>
-
-    <div class="lista-titulo">Lista de proyectos {{ segment }}</div>
-
-    <ng-container *ngIf="segment === 'activos'">
-      <div class="lista-proyectos">
-        <div class="card-proyecto" *ngFor="let p of activos">
-          <div class="card-header">
-            <div class="titulo">{{ p.titulo }}</div>
-            <div class="estado">{{ p.estado }}</div>
-          </div>
-          <div class="progreso">
-            <ion-progress-bar [value]="p.progreso"></ion-progress-bar>
-            <span>{{ (p.progreso * 100) | number:'1.0-0' }}%</span>
-          </div>
-          <div class="acciones">
-            <div class="obs">Observaciones: <b>{{ p.obs }}</b></div>
-            <ion-button fill="clear" class="btn-ver-link">VER PROYECTO</ion-button>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="segment === 'terminados'">
-      <div class="lista-proyectos">
-        <div class="card-proyecto" *ngFor="let p of terminados">
-          <div class="card-row">
-            <div class="card-main">
-              <div class="titulo">{{ p.titulo }}</div>
-              <div class="estado estado-fin">{{ p.estado }}</div>
-            </div>
-            <ion-button class="btn-ver" fill="solid">Ver Proyecto</ion-button>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-</ng-container>
+  </div>
 </ion-content>

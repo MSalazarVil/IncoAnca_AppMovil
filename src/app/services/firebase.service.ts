@@ -1,9 +1,17 @@
-﻿import { Injectable } from '@angular/core';
-import { getFirestore, collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { environment } from '../../environments/environment';
+﻿﻿﻿import { Injectable } from "@angular/core";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { environment } from "../../environments/environment";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FirebaseService {
   private db: any;
 
@@ -13,20 +21,20 @@ export class FirebaseService {
   }
 
   async login(username: string, password: string) {
-    const usuariosRef = collection(this.db, 'users');
+    const usuariosRef = collection(this.db, "users");
 
     // Validar si el usuario existe
-    const qUsuario = query(usuariosRef, where('username', '==', username));
+    const qUsuario = query(usuariosRef, where("username", "==", username));
     const usuarioSnapshot = await getDocs(qUsuario);
     if (usuarioSnapshot.empty) {
-      return { error: 'usuario_no_encontrado' } as any;
+      return { error: "usuario_no_encontrado" } as any;
     }
 
     // Si el usuario existe, validamos la contraseña
     const d = usuarioSnapshot.docs[0];
     const userData: any = d.data();
-    if (userData['password'] !== password) {
-      return { error: 'contrasena_incorrecta' } as any;
+    if (userData["password"] !== password) {
+      return { error: "contrasena_incorrecta" } as any;
     }
     // Devolver datos con id
     return { id: d.id, ...userData } as any;
@@ -35,8 +43,8 @@ export class FirebaseService {
   // Nuevo modelo: 'representante' guarda el userId directamente
   async getEmpresaPorRepresentante(userId: string) {
     if (!userId) return null;
-    const empresasRef = collection(this.db, 'empresas');
-    const qEmp = query(empresasRef, where('representante', '==', userId));
+    const empresasRef = collection(this.db, "empresas");
+    const qEmp = query(empresasRef, where("representante", "==", userId));
     const snap = await getDocs(qEmp);
     if (snap.empty) return null;
     const d = snap.docs[0];
@@ -46,9 +54,11 @@ export class FirebaseService {
   // Acepta id tipo "1k0m4..." o ruta "/empresas/1k0m4..."
   async getEmpresaPorPath(pathOrId: string) {
     if (!pathOrId) return null;
-    const id = pathOrId.includes('/') ? pathOrId.split('/').filter(Boolean)[1] : pathOrId;
+    const id = pathOrId.includes("/")
+      ? pathOrId.split("/").filter(Boolean)[1]
+      : pathOrId;
     if (!id) return null;
-    const ref = doc(this.db, 'empresas', id);
+    const ref = doc(this.db, "empresas", id);
     const snap = await getDoc(ref);
     if (!snap.exists()) return null;
     return { id: snap.id, ...snap.data() } as any;
@@ -56,19 +66,37 @@ export class FirebaseService {
 
   // Listar usuarios con rol 'cliente'
   async listClientes() {
-    const usuariosRef = collection(this.db, 'users');
-    const qCli = query(usuariosRef, where('rol', '==', 'cliente'));
+    const usuariosRef = collection(this.db, "users");
+    const qCli = query(usuariosRef, where("rol", "==", "cliente"));
     const snap = await getDocs(qCli);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   }
 
   // Obtener empresa asociada a un cliente por path/id o por representante
   async getEmpresaDeCliente(cliente: any) {
     if (!cliente) return null;
-    const path = cliente?.empresaAsociada || '';
+    const path = cliente?.empresaAsociada || "";
     if (path) {
-      try { return await this.getEmpresaPorPath(path); } catch { /* ignore */ }
+      try {
+        return await this.getEmpresaPorPath(path);
+      } catch {
+        /* ignore */
+      }
     }
-    try { return await this.getEmpresaPorRepresentante(cliente.id); } catch { return null; }
+    try {
+      return await this.getEmpresaPorRepresentante(cliente.id);
+    } catch {
+      return null;
+    }
+  }
+
+  async getProyectoById(proyectoId: string) {
+    if (!proyectoId) return null;
+    const proyectosRef = collection(this.db, "proyectos"); // Assuming 'proyectos' is your collection name
+    const qProyecto = query(proyectosRef, where("id", "==", proyectoId)); // Assuming 'id' is the field for project ID
+    const snap = await getDocs(qProyecto);
+    if (snap.empty) return null;
+    const d = snap.docs[0];
+    return { id: d.id, ...d.data() } as any;
   }
 }

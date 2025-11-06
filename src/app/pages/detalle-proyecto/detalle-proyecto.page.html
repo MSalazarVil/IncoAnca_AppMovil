@@ -1,0 +1,223 @@
+<ion-header class="ion-no-border header--project">
+  <ion-toolbar class="toolbar-detail">
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/home"
+        (click)="goBack()"
+        aria-label="Volver a la página de inicio"
+      ></ion-back-button>
+    </ion-buttons>
+
+    <ion-title
+      class="ion-text-center toolbar-title"
+      role="heading"
+      aria-level="1"
+    >
+      Proyecto: {{ proyecto?.nombre }}
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button routerLink="/profile" aria-label="Perfil de usuario">
+        <ion-icon
+          src="assets/icons/user-circle.svg"
+          aria-hidden="true"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="content--project">
+  <div class="container ion-padding">
+    <!-- Card info proyecto -->
+    <ion-card
+      class="card card--project-info"
+      role="region"
+      aria-labelledby="project-info-heading"
+    >
+      <ion-item lines="none" class="card__row">
+        <ion-label>
+          <p id="project-info-heading" class="card__title">
+            Información del proyecto
+          </p>
+          <p class="card__meta">Cliente: {{ proyecto?.cliente }}</p>
+          <p class="card__meta">
+            Fecha inicio: {{ proyecto?.fechaInicioContrato }}
+          </p>
+          <p class="card__meta">
+            Ingeniero: {{ proyecto?.ingenieroResponsable }}
+          </p>
+        </ion-label>
+
+        <ion-chip
+          slot="end"
+          class="estado-chip"
+          aria-label="Estado del proyecto: {{ proyecto?.estado }}"
+        >
+          {{ proyecto?.estado }}
+        </ion-chip>
+      </ion-item>
+
+      <div class="progreso-container" aria-live="polite">
+        <ion-label id="progreso-label" class="progreso-label"
+          >Progreso</ion-label
+        >
+        <ion-progress-bar
+          [value]="(proyecto?.progreso || 0) / 100"
+          aria-labelledby="progreso-label"
+          aria-valuenow="{{ proyecto?.progreso }}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></ion-progress-bar>
+        <span class="progreso-percent" aria-hidden="true"
+          >{{ proyecto?.progreso }}%</span
+        >
+      </div>
+    </ion-card>
+
+    <!-- Main content -->
+    <div class="main-content-area">
+      <ion-segment
+        value="documentos"
+        class="seg-detail"
+        mode="md"
+        role="tablist"
+        aria-label="Segmento de secciones"
+      >
+        <ion-segment-button
+          value="documentos"
+          role="tab"
+          aria-controls="panel-documentos"
+          [attr.aria-selected]="true"
+        >
+          <ion-label>Documentos</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          value="datos-cliente"
+          role="tab"
+          aria-controls="panel-datos-cliente"
+          [attr.aria-selected]="false"
+        >
+          <ion-label>Datos del cliente</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <div
+        class="documentos-section"
+        id="panel-documentos"
+        role="tabpanel"
+        aria-labelledby="documentos-tab"
+      >
+        <h2 class="section-title">Documentos según cronograma</h2>
+
+        <ion-card
+          class="card card--document"
+          role="region"
+          aria-labelledby="etapa1-title"
+        >
+          <ion-card-header>
+            <ion-card-title id="etapa1-title">Etapa 1</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <div *ngFor="let doc of proyecto?.documentos; let i = index">
+              <ion-item lines="none" class="documento-item" button="false">
+                <ion-icon
+                  src="assets/icons/file-description.svg"
+                  slot="start"
+                  aria-hidden="true"
+                ></ion-icon>
+
+                <ion-label class="documento-item__label">
+                  <h3 class="documento-item__title">{{ doc.nombre }}</h3>
+                  <p class="documento-item__meta">Subido: {{ doc.subido }}</p>
+                </ion-label>
+
+                <ion-chip
+                  slot="end"
+                  class="file-type-chip"
+                  aria-label="Tipo de archivo: {{ doc.tipo }}"
+                  >{{ doc.tipo }}</ion-chip
+                >
+
+                <div class="documento-item__actions">
+                  <ion-button
+                    fill="outline"
+                    size="small"
+                    (click)="verArchivo(doc)"
+                    aria-label="Ver archivo {{ doc.nombre }}"
+                    >Ver</ion-button
+                  >
+                  <ion-button
+                    fill="clear"
+                    size="small"
+                    (click)="actualizarArchivo(doc)"
+                    aria-label="Actualizar archivo {{ doc.nombre }}"
+                    >Actualizar</ion-button
+                  >
+                </div>
+              </ion-item>
+            </div>
+
+            <div
+              class="observaciones-section"
+              aria-labelledby="observaciones-title"
+            >
+              <h3 id="observaciones-title" class="observaciones-title">
+                Observaciones: {{ proyecto?.observaciones.length }}
+              </h3>
+              <div
+                *ngFor="let obs of proyecto?.observaciones; let i = index"
+                class="observacion-item"
+              >
+                <p class="observacion-item__text">{{ obs.texto }}</p>
+                <ion-button
+                  fill="outline"
+                  size="small"
+                  (click)="levantarObservacion(obs.id)"
+                  aria-label="Levantar observación {{ obs.id }}"
+                  >Levantar</ion-button
+                >
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- Bottom primary actions -->
+    <div
+      class="bottom-buttons"
+      role="toolbar"
+      aria-label="Acciones del proyecto"
+    >
+      <ion-button
+        expand="block"
+        class="btn btn--primary btn-upload"
+        (click)="subirNuevoDocumento()"
+        aria-label="Subir nuevo documento"
+      >
+        <ion-icon
+          slot="start"
+          src="assets/icons/cloud-upload.svg"
+          aria-hidden="true"
+        ></ion-icon>
+        Subir nuevo
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        class="btn btn--secondary"
+        (click)="actualizarEstadoProyecto()"
+        aria-label="Actualizar estado de proyecto"
+      >
+        <ion-icon
+          slot="start"
+          src="assets/icons/refresh.svg"
+          aria-hidden="true"
+        ></ion-icon>
+        Actualizar estado
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
