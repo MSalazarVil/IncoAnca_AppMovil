@@ -55,6 +55,7 @@
 }
 /* Espaciado global y contención del contenido */
 ion-content {
+  overflow-x: hidden;
   --background: #f6f6f6;
   background: #f6f6f6;
   --padding-start: 12px;
@@ -64,15 +65,15 @@ ion-content {
 }
 
 /* Todos los elementos directos dentro de ion-content ocupan 95% */
-ion-content > * {
-  width: 95%;
-  max-width: 95%;
-  margin-left: auto;
-  margin-right: auto;
-}
+ion-content > * { width: 100%; max-width: 100%; margin-left: 0; margin-right: 0; }
 
 /* Evitar desbordes horizontales de cualquier hijo */
 ion-content * {
   box-sizing: border-box;
   max-width: 100%;
 }
+
+img, video, canvas, svg { max-width: 100%; height: auto; }
+
+
+
