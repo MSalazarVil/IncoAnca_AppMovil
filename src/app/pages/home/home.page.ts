@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
+import { FirebaseService } from "../../services/firebase.service";
 
 @Component({
   selector: "app-home",
@@ -16,54 +17,57 @@ export class HomePage implements OnInit {
   nombreUsuario = "";
   rol = "";
   segmentoSeleccionado: string = "activos";
-  proyectosActivos = [
-    {
-      id: "1",
-      nombre: "Puente Río Claro",
-      estado: "Planificación",
-      progreso: 15,
-      ultimaActualizacion: new Date(),
-      descripcion: "Desgaste en soportes - peligro en peatones. Debilitamiento estructural de los soportes del puente, perjudicando la seguridad vial. Ejecucion del reforzamiento y soporte para recuperar la estabilidad del puente",
-      observaciones: 2,
-    },
-    {
-      id: "2",
-      nombre: "Colegio Estatal N° 1234",
-      estado: "Estudio de Factibilidad",
-      progreso: 85,
-      ultimaActualizacion: new Date(),
-      descripcion: "Ampliación de la carretera para mejorar el flujo vehicular. Retrasos por condiciones climáticas adversas. Optimizar la logística de materiales para cumplir con los plazos.",
-      observaciones: 4,
-    },
-  ];
-  proyectosTerminados = [
-    {
-      id: "3",
-      nombre: "Edificio Administrativo",
-      estado: "Finalizado",
-      descripcion: "Construcción de un nuevo edificio para oficinas administrativas. Proyecto entregado en tiempo y forma. Satisfacción del cliente con el resultado final.",
-    },
-    {
-      id: "4",
-      nombre: "Parque Urbano Central",
-      estado: "Finalizado",
-      descripcion: "Diseño y construcción de un parque recreativo en el centro de la ciudad. Gran afluencia de público desde su inauguración. Contribución significativa al espacio público.",
-    },
-  ];
+  proyectosActivos: any[] = [];
+  proyectosTerminados: any[] = [];
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private firebaseService: FirebaseService
   ) {}
 
   ngOnInit() {
     this.authService.getUserName().subscribe((name) => {
       this.nombreUsuario = name || "";
+      console.log("Nombre de usuario cargado:", this.nombreUsuario);
     });
     this.authService.getUserRole().subscribe((role) => {
       this.rol = role || "";
+      console.log("Rol de usuario cargado:", this.rol);
     });
-    console.log("HomePage ngOnInit called");
+    this.loadProyectos();
+  }
+
+  async loadProyectos() {
+    console.log("Cargando proyectos...");
+    try {
+      // Obtener ID de documento del empleado logueado (asegurarse que sea el ID del documento en Firebase)
+      const employeeDocId = localStorage.getItem("userId");
+      if (!employeeDocId) {
+        console.warn("No se encontró ID de documento del empleado en localStorage.");
+        return;
+      }
+      const allProyectos = await this.firebaseService.getProyectosPorResponsable(employeeDocId);
+      console.log("Proyectos obtenidos de Firebase para el empleado con ID de documento:", employeeDocId, allProyectos);
+      // Process each project to determine the number of observations
+      const proyectosConObservaciones = allProyectos.map((proyecto: any) => {
+        // Assuming 'observacion' is a single DocumentReference or undefined
+        const numObservaciones = proyecto.observacion ? 1 : 0;
+        return { ...proyecto, numObservaciones };
+      });
+
+      // Filtrar proyectos según el estado registrado en Firebase (minúsculas)
+      this.proyectosActivos = proyectosConObservaciones.filter(
+        (proyecto: any) => proyecto.estado === "activo"
+      );
+      this.proyectosTerminados = proyectosConObservaciones.filter(
+        (proyecto: any) => proyecto.estado === "finalizado"
+      );
+      console.log("Proyectos activos:", this.proyectosActivos);
+      console.log("Proyectos terminados:", this.proyectosTerminados);
+    } catch (error) {
+      console.error("Error al cargar proyectos:", error);
+    }
   }
 
   navigateAndBlur(path: string | any[]) {

@@ -36,16 +36,6 @@ export class LoginPage {
     this.errorUsuario = "";
     this.errorContrasena = "";
 
-    // Usuario de prueba temporal para Ingeniero
-    if (this.usuario === "Ingeniero" && this.contrasena === "1234") {
-      localStorage.setItem("userId", "temp_ingeniero_id");
-      localStorage.setItem("nombre", "Ingeniero de Prueba");
-      localStorage.setItem("rol", "ingeniero");
-      localStorage.setItem("empresaAsociada", "Empresa de Prueba");
-      this.router.navigateByUrl("/home", { replaceUrl: true });
-      return;
-    }
-
     // Validar campos vacíos antes de consultar al Firestore
     if (!this.usuario.trim() || !this.contrasena.trim()) {
       if (!this.usuario.trim()) {
@@ -69,20 +59,13 @@ export class LoginPage {
     } else if (user["error"] === "contrasena_incorrecta") {
       this.errorContrasena = "Contraseña incorrecta";
       this.contrasena = "";
-    } else if (user.rol === "empleado") {
-      localStorage.setItem("userId", user.id || "");
-      localStorage.setItem("nombre", user["nombre"] || this.usuario);
-      localStorage.setItem("rol", user.rol);
-      localStorage.setItem("empresaAsociada", user.empresaAsociada || "");
-      this.router.navigate(["/home"]);
-    } else if (user.rol === "cliente") {
-      localStorage.setItem("userId", user.id || "");
-      localStorage.setItem("nombre", user["nombre"] || this.usuario);
-      localStorage.setItem("rol", user.rol);
-      localStorage.setItem("empresaAsociada", user.empresaAsociada || "");
-      this.router.navigate(["/home"]);
     } else {
-      alert("Rol de usuario no reconocido");
+      // Asumimos que si el usuario existe en la colección Empleados, su rol es 'empleado'
+      localStorage.setItem("userId", user.id || "");
+      localStorage.setItem("nombre", user["nombre"] || this.usuario);
+      localStorage.setItem("rol", "empleado"); // Rol fijo como 'empleado'
+      localStorage.setItem("empresaAsociada", user.empresaAsociada || "");
+      this.router.navigate(["/home"], { replaceUrl: true });
     }
   }
 }

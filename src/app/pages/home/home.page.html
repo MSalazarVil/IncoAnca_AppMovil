@@ -3,7 +3,9 @@
     <ion-buttons slot="start">
       <img src="assets/img/logo.png" alt="Logo" class="toolbar-logo" />
     </ion-buttons>
-    <ion-title class="ion-text-center">Usuario Ingeniero</ion-title>
+    <ion-title class="ion-text-center"
+      >{{ nombreUsuario }} ({{ rol }})</ion-title
+    >
     <ion-buttons slot="end">
       <ion-button
         (click)="navigateAndBlur('/profile')"
@@ -55,6 +57,7 @@
         <span>Reportes</span>
       </ion-button>
       <ion-button
+        *ngIf="isEmpleado"
         class="tile"
         expand="block"
         fill="clear"
@@ -67,6 +70,7 @@
     </div>
 
     <ion-button
+      *ngIf="isEmpleado"
       class="btn-nuevo-proyecto"
       expand="block"
       (click)="navigateAndBlur('/nuevo-proyecto')"
@@ -98,21 +102,16 @@
       <!-- Proyectos Activos -->
       <ng-container *ngIf="segmentoSeleccionado === 'activos'">
         <ion-card
-          class="card-proyecto"
+          class="card-proyecto-activo"
           *ngFor="let proyecto of proyectosActivos"
         >
           <div class="card-header">
-            <h3 class="titulo">{{ proyecto.nombre }}</h3>
-            <span class="estado">{{ proyecto.estado }}</span>
+            <h3 class="titulo-activo">{{ proyecto.nombre }}</h3>
+            <span class="estado-activo">{{ proyecto.estado }}</span>
           </div>
-          <div class="progreso">
-            <ion-progress-bar
-              [value]="proyecto.progreso / 100"
-            ></ion-progress-bar>
-            <span>{{ proyecto.progreso }}%</span>
-          </div>
+
           <div class="acciones">
-            <span class="obs">Observaciones: {{ proyecto.observaciones }}</span>
+            <span class="obs">Observaciones: {{ proyecto.numObservaciones }}</span>
             <ion-button
               class="btn-ver-link"
               fill="clear"
@@ -128,15 +127,16 @@
       <!-- Proyectos Terminados -->
       <ng-container *ngIf="segmentoSeleccionado === 'terminados'">
         <ion-card
-          class="card-proyecto card-row"
+          class="card-proyecto-terminado"
           *ngFor="let proyecto of proyectosTerminados"
         >
           <div class="card-main">
-            <h3 class="titulo">{{ proyecto.nombre }}</h3>
+            <h3 class="titulo-terminado">{{ proyecto.nombre }}</h3>
             <span class="estado estado-fin">{{ proyecto.estado }}</span>
           </div>
           <ion-button
             class="btn-ver"
+            fill="clear"
             size="small"
             (click)="navigateAndBlur(['/detalle-proyecto', proyecto.id])"
           >

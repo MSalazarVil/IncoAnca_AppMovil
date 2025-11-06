@@ -1,4 +1,4 @@
-﻿﻿﻿import { Injectable } from "@angular/core";
+﻿import { Injectable } from "@angular/core";
 import {
   getFirestore,
   collection,
@@ -7,6 +7,7 @@ import {
   where,
   doc,
   getDoc,
+  addDoc,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { environment } from "../../environments/environment";
@@ -21,10 +22,10 @@ export class FirebaseService {
   }
 
   async login(username: string, password: string) {
-    const usuariosRef = collection(this.db, "users");
+    const usuariosRef = collection(this.db, "Empleados");
 
     // Validar si el usuario existe
-    const qUsuario = query(usuariosRef, where("username", "==", username));
+    const qUsuario = query(usuariosRef, where("user", "==", username));
     const usuarioSnapshot = await getDocs(qUsuario);
     if (usuarioSnapshot.empty) {
       return { error: "usuario_no_encontrado" } as any;
@@ -90,13 +91,67 @@ export class FirebaseService {
     }
   }
 
-  async getProyectoById(proyectoId: string) {
+  async getDocumentByRef(docRef: any): Promise<any | null> {
+    if (!docRef) {
+      return null;
+    }
+    try {
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { id: docSnap.id, ...(docSnap.data() || {}) };
+      } else {
+        console.log("No such document!");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error getting document by reference:", error);
+      return null;
+    }
+  }
+
+  async getProyectoById(proyectoId: string): Promise<any | null> {
     if (!proyectoId) return null;
-    const proyectosRef = collection(this.db, "proyectos"); // Assuming 'proyectos' is your collection name
-    const qProyecto = query(proyectosRef, where("id", "==", proyectoId)); // Assuming 'id' is the field for project ID
-    const snap = await getDocs(qProyecto);
-    if (snap.empty) return null;
-    const d = snap.docs[0];
-    return { id: d.id, ...d.data() } as any;
+    const docRef = doc(this.db, "proyectos", proyectoId);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) return null;
+    return { id: docSnap.id, ...docSnap.data() } as any;
+  }
+
+  async getProyectosPorResponsable(userId: string) {
+    if (!userId) return [];
+    try {
+      const proyectosRef = collection(this.db, "proyectos");
+      // Crear referencia al documento del empleado responsable
+      const responsableRef = doc(this.db, "Empleados", userId);
+      // Filtrar proyectos por referencia de responsable
+      const qProyectos = query(proyectosRef, where("responsable", "==", responsableRef));
+      const snap = await getDocs(qProyectos);
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() })) as any[];
+    } catch (error) {
+      console.error("Error al obtener proyectos por responsable:", error);
+      return [];
+    }
+  }
+
+  async getAllProyectos() {
+    try {
+      const proyectosRef = collection(this.db, "proyectos");
+      const snap = await getDocs(proyectosRef);
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() })) as any[];
+    } catch (error) {
+      console.error("Error al obtener todos los proyectos:", error);
+      return [];
+    }
+  }
+
+  async createProject(projectData: any) {
+    try {
+      const proyectosRef = collection(this.db, "proyectos");
+      await addDoc(proyectosRef, projectData);
+      console.log("Proyecto añadido a Firestore:", projectData);
+    } catch (error) {
+      console.error("Error al añadir proyecto a Firestore:", error);
+      throw error;
+    }
   }
 }
