@@ -1,13 +1,48 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>clientes</ion-title>
+﻿<ion-header>
+  <ion-toolbar class="toolbar-home">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Clientes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/add-cliente">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">clientes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="cargar(); $event.target.complete()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="!cargando; else cargandoTpl">
+    <ion-accordion-group>
+      <ion-accordion *ngFor="let c of clientes" value="{{ c.id }}">
+        <ion-item slot="header">
+          <ion-label>
+            <div style="font-weight:700;color:#262626">{{ c.nombre || c.username }}</div>
+            <div style="color:#6b6b6b;font-size:12px">{{ c.email }}</div>
+          </ion-label>
+        </ion-item>
+        <div class="empresa-card" slot="content" *ngIf="c.empresa; else sinEmpresa">
+          <div class="empresa-row"><span class="label">Razón social</span><span class="value">{{ c.empresa.razonSocial }}</span></div>
+          <div class="empresa-row"><span class="label">RUC</span><span class="value">{{ c.empresa.ruc }}</span></div>
+          <div class="empresa-row"><span class="label">Dirección</span><span class="value">{{ c.empresa['dirección'] }}</span></div>
+          <div class="empresa-row"><span class="label">Teléfono</span><span class="value">{{ c.empresa.telefono }}</span></div>
+          <div class="empresa-row"><span class="label">Tipo</span><span class="value">{{ c.empresa.tipoEntidad }}</span></div>
+          <div class="empresa-row"><span class="label">Estado</span><span class="value">{{ c.empresa.estado | titlecase }}</span></div>
+          <div class="empresa-row"><span class="label">Registro</span><span class="value">{{ c.empresa.fechaRegistro }}</span></div>
+        </div>
+        <ng-template #sinEmpresa>
+          <div class="empresa-empty">Sin empresa asociada</div>
+        </ng-template>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-list>
+
+  <ng-template #cargandoTpl>
+    <div class="empresa-empty">Cargando clientes...</div>
+  </ng-template>
 </ion-content>

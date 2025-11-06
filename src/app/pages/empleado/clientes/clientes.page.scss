@@ -1,0 +1,6 @@
+﻿.empresa-card { background:#fff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin:6px 0; box-shadow:0 2px 4px rgba(0,0,0,0.06); }
+.empresa-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #eee; }
+.empresa-row:last-child { border-bottom:0; }
+.empresa-row .label { color:#6b6b6b; font-size:12px; }
+.empresa-row .value { color:#262626; font-weight:600; max-width:60%; text-align:right; }
+.empresa-empty { text-align:center; color:#6b6b6b; padding:12px 0; }
