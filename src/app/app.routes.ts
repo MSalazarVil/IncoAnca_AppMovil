@@ -20,10 +20,6 @@ export const routes: Routes = [
   {
     path: 'add-cliente',
     loadComponent: () => import('./pages/empleado/add-cliente/add-cliente.page').then( m => m.AddClientePage)
-  },
-  {
-    path: 'clientes',
-    loadComponent: () => import('./pages/empleado/clientes/clientes.page').then( m => m.ClientesPage)
   }
 
 ];
