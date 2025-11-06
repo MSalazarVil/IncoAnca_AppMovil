@@ -53,4 +53,22 @@ export class FirebaseService {
     if (!snap.exists()) return null;
     return { id: snap.id, ...snap.data() } as any;
   }
+
+  // Listar usuarios con rol 'cliente'
+  async listClientes() {
+    const usuariosRef = collection(this.db, 'users');
+    const qCli = query(usuariosRef, where('rol', '==', 'cliente'));
+    const snap = await getDocs(qCli);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  }
+
+  // Obtener empresa asociada a un cliente por path/id o por representante
+  async getEmpresaDeCliente(cliente: any) {
+    if (!cliente) return null;
+    const path = cliente?.empresaAsociada || '';
+    if (path) {
+      try { return await this.getEmpresaPorPath(path); } catch { /* ignore */ }
+    }
+    try { return await this.getEmpresaPorRepresentante(cliente.id); } catch { return null; }
+  }
 }
