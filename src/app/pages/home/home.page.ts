@@ -17,6 +17,14 @@ export class HomePage implements OnInit {
   rol = '';
   segment = 'activos';
   buscar = '';
+  activos = [
+    { titulo: 'Puente Rio Claro', estado: 'Planificacion', progreso: 0.25, obs: 2 },
+    { titulo: 'Puente Rio Claro', estado: 'Planificacion', progreso: 0.25, obs: 2 },
+  ];
+  terminados = [
+    { titulo: 'Edificio Administrativo', estado: 'Finalizado' },
+    { titulo: 'Carretera Principal Tramo A', estado: 'Finalizado' },
+  ];
   
   constructor(private router: Router) {}
 
@@ -43,3 +51,5 @@ export class HomePage implements OnInit {
     return parts[0] || n;
   }
 }
+
+

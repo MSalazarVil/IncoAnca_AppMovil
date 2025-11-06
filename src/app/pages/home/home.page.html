@@ -62,22 +62,38 @@
 
     <div class="lista-titulo">Lista de proyectos {{ segment }}</div>
 
-    <div class="lista-proyectos">
-      <div class="card-proyecto" *ngFor="let _ of [1,2]">
-        <div class="card-header">
-          <div class="titulo">Puente Río Claro</div>
-          <div class="estado">Planificación</div>
-        </div>
-        <div class="progreso">
-          <ion-progress-bar value="0.25"></ion-progress-bar>
-          <span>25%</span>
-        </div>
-        <div class="acciones">
-          <div class="obs">Observaciones: <b>2</b></div>
-          <ion-button size="small" fill="outline">Ver Proyecto</ion-button>
+    <ng-container *ngIf="segment === 'activos'">
+      <div class="lista-proyectos">
+        <div class="card-proyecto" *ngFor="let p of activos">
+          <div class="card-header">
+            <div class="titulo">{{ p.titulo }}</div>
+            <div class="estado">{{ p.estado }}</div>
+          </div>
+          <div class="progreso">
+            <ion-progress-bar [value]="p.progreso"></ion-progress-bar>
+            <span>{{ (p.progreso * 100) | number:'1.0-0' }}%</span>
+          </div>
+          <div class="acciones">
+            <div class="obs">Observaciones: <b>{{ p.obs }}</b></div>
+            <ion-button fill="clear" class="btn-ver-link">VER PROYECTO</ion-button>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="segment === 'terminados'">
+      <div class="lista-proyectos">
+        <div class="card-proyecto" *ngFor="let p of terminados">
+          <div class="card-row">
+            <div class="card-main">
+              <div class="titulo">{{ p.titulo }}</div>
+              <div class="estado estado-fin">{{ p.estado }}</div>
+            </div>
+            <ion-button class="btn-ver" fill="solid">Ver Proyecto</ion-button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </ng-container>
 
   <!-- Cliente: encabezado y segmentación distinta -->
@@ -100,23 +116,42 @@
 
     <div class="lista-titulo">Lista de proyectos {{ segment }}</div>
 
-    <div class="lista-proyectos">
-      <div class="card-proyecto">
-        <div class="card-header">
-          <div class="titulo">Puente Río Claro</div>
-          <div class="estado">Planificación</div>
-        </div>
-        <div class="progreso">
-          <ion-progress-bar value="0.15"></ion-progress-bar>
-          <span>15%</span>
-        </div>
-        <div class="acciones">
-          <div class="obs">Observaciones: <b>2</b></div>
-          <ion-button size="small" fill="outline">Ver Proyecto</ion-button>
+    <ng-container *ngIf="segment === 'activos'">
+      <div class="lista-proyectos">
+        <div class="card-proyecto" *ngFor="let p of activos">
+          <div class="card-header">
+            <div class="titulo">{{ p.titulo }}</div>
+            <div class="estado">{{ p.estado }}</div>
+          </div>
+          <div class="progreso">
+            <ion-progress-bar [value]="p.progreso"></ion-progress-bar>
+            <span>{{ (p.progreso * 100) | number:'1.0-0' }}%</span>
+          </div>
+          <div class="acciones">
+            <div class="obs">Observaciones: <b>{{ p.obs }}</b></div>
+            <ion-button fill="clear" class="btn-ver-link">VER PROYECTO</ion-button>
+          </div>
         </div>
       </div>
-    </div>
-  </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="segment === 'terminados'">
+      <div class="lista-proyectos">
+        <div class="card-proyecto" *ngFor="let p of terminados">
+          <div class="card-row">
+            <div class="card-main">
+              <div class="titulo">{{ p.titulo }}</div>
+              <div class="estado estado-fin">{{ p.estado }}</div>
+            </div>
+            <ion-button class="btn-ver" fill="solid">Ver Proyecto</ion-button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+</ng-container>
 </ion-content>
+
+
+
 
 
