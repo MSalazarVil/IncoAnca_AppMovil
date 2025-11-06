@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { RouterLink } from '@angular/router';
 import { FirebaseService } from '../../../services/firebase.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { FirebaseService } from '../../../services/firebase.service';
   templateUrl: './clientes.page.html',
   styleUrls: ['./clientes.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, RouterLink]
 })
 export class ClientesPage implements OnInit {
   clientes: any[] = [];
