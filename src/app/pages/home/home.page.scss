@@ -88,13 +88,23 @@
 
 .accesos-rapidos {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin: 10px 4px 14px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Asegura que cada botón ocupe todo el ancho de su celda */
-.accesos-rapidos .tile { width: 100%; }
+.accesos-rapidos .tile { width: 100%; min-width: 0; }
+.accesos-rapidos .tile::part(native) { min-width: 0; max-width: 100%; }
+.tile span { overflow-wrap: anywhere; white-space: normal; }
+
+/* En pantallas pequeñas reduce a 2 columnas para evitar desbordes */
+@media (max-width: 400px) {
+  .accesos-rapidos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 .tile { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
