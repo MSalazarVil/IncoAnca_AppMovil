@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,14 +15,30 @@ import { Router } from '@angular/router';
 export class PerfilPage implements OnInit {
   nombre = '';
   rol = '';
+  empresa: any = null;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private firebase: FirebaseService) { }
 
   ngOnInit() {
     const nombre = localStorage.getItem('nombre');
     const rol = localStorage.getItem('rol');
     this.nombre = nombre ? nombre : '';
     this.rol = rol ? rol : '';
+    const userId = localStorage.getItem('userId') || '';
+
+    if (this.rol === 'cliente' && userId) {
+      // Buscar empresa asociada al usuario en Firestore
+      const empresaRef = localStorage.getItem('empresaAsociada') || '';
+      if (empresaRef) {
+        this.firebase.getEmpresaPorPath(empresaRef)
+          .then(emp => this.empresa = emp)
+          .catch(() => this.empresa = null);
+      } else {
+        this.firebase.getEmpresaPorRepresentante(userId)
+          .then(emp => this.empresa = emp)
+          .catch(() => this.empresa = null);
+      }
+    }
   }
 
   cerrarSesion() {
@@ -31,3 +48,4 @@ export class PerfilPage implements OnInit {
   }
 
 }
+

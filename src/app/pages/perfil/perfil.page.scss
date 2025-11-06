@@ -32,3 +32,12 @@
 .perfil-actions ion-button::part(native) { border-color: #cfd8dc; }
 
 .btn-salir { margin-top: 12px; }
+
+/* Empresa asociada */
+.empresa-card { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); padding: 16px; margin-top: 16px; }
+.empresa-title { font-weight: 800; color: #262626; margin-bottom: 10px; }
+.empresa-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #e6e6e6; }
+.empresa-row:last-child { border-bottom: 0; }
+.empresa-row .label { color: #6b6b6b; font-size: 12px; }
+.empresa-row .value { color: #262626; font-weight: 600; text-align: right; max-width: 60%; }
+.empresa-empty { margin-top: 12px; color: #6b6b6b; text-align: center; font-size: 14px; }
