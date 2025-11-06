@@ -30,6 +30,16 @@ export class DetalleProyectoPage implements OnInit, OnDestroy {
     console.log('DetalleProyectoPage: Constructor llamado');
   }
 
+  async uploadNewDocument() {
+    // Implement your logic for uploading a new document here
+    console.log('Subir Nuevo Documento clicked');
+  }
+
+  async updateProjectStatus() {
+    // Implement your logic for updating project status here
+    console.log('Actualizar Estado de Proyecto clicked');
+  }
+
   ngOnInit() {
     console.log('DetalleProyectoPage: ngOnInit llamado');
     this.routeSub = this.route.paramMap.subscribe(params => {

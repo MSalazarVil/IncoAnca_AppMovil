@@ -110,114 +110,86 @@
       >
         <h2 class="section-title">Documentos según cronograma</h2>
 
-        <ion-card
-          class="card card--document"
-          role="region"
-          aria-labelledby="etapa1-title"
-        >
-          <ion-card-header>
-            <ion-card-title id="etapa1-title">Etapa 1</ion-card-title>
-          </ion-card-header>
+        <ion-accordion-group>
+          <ion-accordion value="etapa1">
+            <ion-item slot="header" class="accordion-header-item">
+              <ion-label class="accordion-header-title">Etapa 1</ion-label>
+            </ion-item>
 
-          <ion-card-content>
-            <div *ngFor="let doc of proyecto?.documentos; let i = index">
-              <ion-item lines="none" class="documento-item" button="false">
-                <ion-icon
-                  src="assets/icons/file-description.svg"
-                  slot="start"
-                  aria-hidden="true"
-                ></ion-icon>
+            <div slot="content" class="accordion-content-wrapper">
+              <div *ngFor="let doc of proyecto?.documentos; let i = index">
+                <ion-item lines="none" class="documento-item" button="false">
+                  <ion-icon
+                    src="assets/icons/file-description.svg"
+                    slot="start"
+                    aria-hidden="true"
+                  ></ion-icon>
 
-                <ion-label class="documento-item__label">
-                  <h3 class="documento-item__title">{{ doc.nombre }}</h3>
-                  <p class="documento-item__meta">Subido: {{ doc.subido }}</p>
-                </ion-label>
+                  <ion-label class="documento-item__label">
+                    <h3 class="documento-item__title">{{ doc.nombre }}</h3>
+                    <p class="documento-item__meta">Subido: {{ doc.subido }}</p>
+                  </ion-label>
 
-                <ion-chip
-                  slot="end"
-                  class="file-type-chip"
-                  aria-label="Tipo de archivo: {{ doc.tipo }}"
-                  >{{ doc.tipo }}</ion-chip
+                  <div class="document-actions-wrapper">
+                    <div class="file-view-row">
+                      <div class="file-type-info">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>.{{ doc.tipo }}</span>
+                      </div>
+                      <ion-button
+                        fill="outline"
+                        size="small"
+                        (click)="verArchivo(doc)"
+                        aria-label="Ver archivo {{ doc.nombre }}"
+                        >Ver Archivo</ion-button
+                      >
+                    </div>
+                    <ion-button
+                      fill="outline"
+                      size="small"
+                      (click)="actualizarArchivo(doc)"
+                      aria-label="Actualizar archivo {{ doc.nombre }}"
+                      >Actualizar Archivo</ion-button
+                    >
+                  </div>
+                </ion-item>
+              </div>
+
+              <div
+                class="observaciones-section"
+                aria-labelledby="observaciones-title"
+              >
+                <h3 id="observaciones-title" class="observaciones-title">
+                  Observaciones: {{ proyecto?.observaciones.length }}
+                </h3>
+                <div
+                  *ngFor="let obs of proyecto?.observaciones; let i = index"
+                  class="observacion-item"
                 >
-
-                <div class="documento-item__actions">
+                  <p class="observacion-item__text">{{ obs.texto }}</p>
                   <ion-button
                     fill="outline"
                     size="small"
-                    (click)="verArchivo(doc)"
-                    aria-label="Ver archivo {{ doc.nombre }}"
-                    >Ver</ion-button
-                  >
-                  <ion-button
-                    fill="clear"
-                    size="small"
-                    (click)="actualizarArchivo(doc)"
-                    aria-label="Actualizar archivo {{ doc.nombre }}"
-                    >Actualizar</ion-button
+                    (click)="levantarObservacion(obs.id)"
+                    aria-label="Levantar observación {{ obs.id }}"
+                    >Levantar</ion-button
                   >
                 </div>
-              </ion-item>
-            </div>
-
-            <div
-              class="observaciones-section"
-              aria-labelledby="observaciones-title"
-            >
-              <h3 id="observaciones-title" class="observaciones-title">
-                Observaciones: {{ proyecto?.observaciones.length }}
-              </h3>
-              <div
-                *ngFor="let obs of proyecto?.observaciones; let i = index"
-                class="observacion-item"
-              >
-                <p class="observacion-item__text">{{ obs.texto }}</p>
-                <ion-button
-                  fill="outline"
-                  size="small"
-                  (click)="levantarObservacion(obs.id)"
-                  aria-label="Levantar observación {{ obs.id }}"
-                  >Levantar</ion-button
-                >
               </div>
             </div>
-          </ion-card-content>
-        </ion-card>
+          </ion-accordion>
+        </ion-accordion-group>
       </div>
     </div>
 
-    <!-- Bottom primary actions -->
-    <div
-      class="bottom-buttons"
-      role="toolbar"
-      aria-label="Acciones del proyecto"
-    >
-      <ion-button
-        expand="block"
-        class="btn btn--primary btn-upload"
-        (click)="subirNuevoDocumento()"
-        aria-label="Subir nuevo documento"
-      >
-        <ion-icon
-          slot="start"
-          src="assets/icons/cloud-upload.svg"
-          aria-hidden="true"
-        ></ion-icon>
-        Subir nuevo
-      </ion-button>
+      <ion-button class="upload-button" expand="block" (click)="uploadNewDocument()">
+    <ion-icon name="document-text-outline" slot="start"></ion-icon>
+    Subir Nuevo Documento
+  </ion-button>
 
-      <ion-button
-        expand="block"
-        class="btn btn--secondary"
-        (click)="actualizarEstadoProyecto()"
-        aria-label="Actualizar estado de proyecto"
-      >
-        <ion-icon
-          slot="start"
-          src="assets/icons/refresh.svg"
-          aria-hidden="true"
-        ></ion-icon>
-        Actualizar estado
-      </ion-button>
-    </div>
+  <ion-button class="update-status-button" expand="block" (click)="updateProjectStatus()">
+    <ion-icon name="refresh-outline" slot="start"></ion-icon>
+    Actualizar Estado de Proyecto
+  </ion-button>
   </div>
 </ion-content>

@@ -18,11 +18,16 @@
   --ion-color-dark-shade: #0a0a0a; /* Very dark for deep contrast */
   --ion-color-success: #2ecc71; /* Vibrant success green */
   --ion-color-warning: #f1c40f; /* Brighter warning yellow */
-  --ion-color-tertiary: #9b59b6; /* A more distinct tertiary color */
+  --ion-color-tertiary: #c962e9; /* A more distinct tertiary color */ //gre//
   --ion-color-secondary: #3498db; /* A clear secondary blue */
   --ion-color-accent: #00796b; /* A richer, deeper teal for primary actions */
   --ion-color-accent-rgb: 0, 121, 107;
   --ion-box-shadow-subtle: 0 2px 10px rgba(0, 0, 0, 0.06);
   --ion-box-shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.08);
   --ion-box-shadow-strong: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+ion-segment-button {
+  --indicator-color: transparent !important;
+  --indicator-color-checked: transparent !important;
 }

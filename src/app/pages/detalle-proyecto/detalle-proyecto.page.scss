@@ -24,9 +24,14 @@
 
 /* Global content */
 ion-content.content--project {
-  --background: var(--app-bg);
+  --background: #ffffff !important; /* Forzamos un fondo blanco con !important */
   font-family: var(--font-family-app);
   color: var(--text);
+  color-scheme: light; /* Forzamos el esquema de color claro */
+
+  div {
+    background-color: #ffffff !important; /* Forzamos un fondo blanco para los divs dentro de ion-content con !important */
+  }
 }
 
 /* Toolbar */
@@ -120,32 +125,37 @@ ion-content.content--project {
 
 /* Segment (tabs) */
 .seg-detail {
-  display: block;
+  display: flex; /* Changed from block to flex */
   margin: 18px 0;
-  padding: 6px;
-  border-radius: 999px;
-  background: rgba(var(--ion-color-dark-rgb), 0.02);
-  border: 1px solid rgba(var(--ion-color-dark-rgb), 0.03);
+  padding: 0; /* Removed padding */
+  border-radius: 0; /* Removed border-radius */
+  background: transparent; /* Made background transparent */
+  border: none; /* Removed border */
+  gap: 10px; /* Added gap for separation */
 
   ion-segment-button {
     --background: transparent;
-    --color: var(--muted);
-    border-radius: 999px;
+    --color: var(--ion-color-dark); /* Changed to black for unselected buttons */
+    border-radius: 8px;
     min-height: 48px;
     padding: 0 14px;
     font-weight: 600;
     font-size: 14px;
     transition: all 0.2s ease;
+    flex: 1;
+    border: 1px solid rgba(var(--ion-color-dark-rgb), 0.08); /* Ensure border is always visible */
 
     &.segment-button-checked,
     &[aria-pressed="true"] {
-      --background: var(--primary);
-      --color: var(--ion-color-light);
+      --background: var(--ion-color-dark);
+      --color: var(--ion-color-light); /* White text for selected button */
       box-shadow: var(--shadow-soft);
+      border: 1px solid var(--ion-color-dark);
+      transition: background 0.2s ease;
     }
 
     &::part(native) {
-      border-radius: 999px;
+      border-radius: 8px; /* Adjusted border-radius for native part */
     }
   }
 }
@@ -157,174 +167,133 @@ ion-content.content--project {
   font-size: 18px;
   margin: 10px 0 14px;
   color: var(--text);
+  margin-left: 15px;
 }
 
-/* Document card */
-.card--document {
-  ion-card-header {
-    padding: 12px 14px;
-    border-bottom: 1px solid rgba(var(--ion-color-dark-rgb), 0.04);
-
-    ion-card-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-    }
-  }
-
-  ion-card-content {
-    padding: 12px 14px;
-
-    .documento-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-      min-height: 56px;
-
-      ion-icon {
-        width: 36px;
-        height: 36px;
-        color: var(--accent);
-        flex-shrink: 0;
-      }
-
-      .documento-item__label {
-        flex: 1 1 auto;
-        overflow: hidden;
-      }
-
-      .documento-item__title {
-        font-size: 14px;
-        font-weight: 600;
-        margin: 0;
-        color: var(--text);
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-
-      .documento-item__meta {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 3px;
-      }
-
-      .file-type-chip {
-        background: rgba(var(--ion-color-accent-rgb), 0.08);
-        color: var(--accent);
-        font-size: 12px;
-        padding: 6px 8px;
-        border-radius: 999px;
-        flex-shrink: 0;
-      }
-
-      .documento-item__actions {
-        display: flex;
-        gap: 8px;
-      }
-
-      ion-button {
-        --border-radius: 10px;
-        font-size: 13px;
-        height: 36px;
-        padding: 0 10px;
-        min-width: 44px;
-      }
-
-      ion-button[fill="outline"] {
-        --color: var(--accent);
-        --border-color: rgba(var(--ion-color-accent-rgb), 0.25);
-        --border-width: 1px;
-        background: transparent;
-      }
-
-      ion-button[fill="clear"] {
-        --color: var(--muted);
-        background: transparent;
-      }
-    }
-
-    .observaciones-section {
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px dashed rgba(var(--ion-color-dark-rgb), 0.04);
-
-      .observaciones-title {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 10px;
-      }
-
-      .observacion-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        background: rgba(var(--ion-color-light-rgb), 0.7);
-        padding: 10px;
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-soft);
-        margin-bottom: 10px;
-
-        .observacion-item__text {
-          font-size: 13px;
-          color: var(--muted);
-          margin: 0;
-          flex: 1 1 auto;
-        }
-
-        ion-button {
-          --border-radius: 10px;
-          font-size: 13px;
-          height: 36px;
-          padding: 0 10px;
-          --color: var(--accent);
-          --border-color: rgba(var(--ion-color-accent-rgb), 0.25);
-          --border-width: 1px;
-        }
-      }
-    }
-  }
+.accordion-header-item {
+  --background: var(--ion-color-light-tint);
+  --border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Bottom buttons */
-.bottom-buttons {
-  padding-top: 16px;
-  margin-top: 12px;
-  border-top: 1px solid rgba(var(--ion-color-dark-rgb), 0.04);
+.accordion-header-title {
+  font-weight: bold;
+  color: var(--ion-color-dark);
+}
 
-  .btn {
-    --border-radius: 12px;
-    height: 54px;
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow-strong);
+.accordion-content-wrapper {
+  padding: 10px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.documento-item {
+  --background: var(--ion-color-light);
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 10px;
+}
+
+.documento-item__label {
+  margin-left: 10px;
+}
+
+.documento-item__title {
+  font-weight: bold;
+  color: var(--ion-color-dark);
+}
+
+.documento-item__meta {
+  font-size: 0.8em;
+  color: var(--ion-color-medium);
+}
+
+.file-type-chip {
+    margin-left: auto;
+    margin-right: 10px;
+  }
+
+  .document-actions-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+  }
+
+  .file-view-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
+    gap: 10px;
   }
 
-  .btn--primary {
-    --background: var(--primary);
-    --color: var(--ion-color-light);
+  .file-type-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+    color: var(--ion-color-medium);
+
+    ion-icon {
+      font-size: 1.2em;
+    }
   }
 
-  .btn--secondary {
-    --background: transparent;
-    --color: var(--accent);
-    --border-color: rgba(var(--ion-color-accent-rgb), 0.25);
-    --border-width: 1px;
+  .documento-item__actions {
+    display: flex;
+    gap: 5px;
   }
 
-  ion-icon {
-    margin-right: 10px;
-    font-size: 18px;
-  }
+.observaciones-section {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ion-color-light-shade);
 }
+
+.observaciones-title {
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  margin-bottom: 10px;
+}
+
+.observacion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: var(--ion-color-white);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 10px;
+}
+
+.observacion-item__text {
+  flex-grow: 1;
+  margin-right: 10px;
+  color: var(--ion-color-dark-shade);
+}
+
+.observacion-item ion-button {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  font-size: 0.8em;
+}
+
+  .upload-button {
+    --background: var(--ion-color-tertiary);
+    width: 90%;
+    margin: 10px auto;
+    border: none;
+  }
+
+  .update-status-button {
+    --background: var(--ion-color-success);
+    width: 90%;
+    margin: 10px auto;
+    border: none;
+  }
 
 /* Responsive ajustes para Redmi Note 9 (≈412px ancho) */
 @media (max-width: 420px) {
