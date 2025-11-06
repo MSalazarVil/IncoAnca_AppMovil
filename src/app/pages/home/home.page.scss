@@ -1,6 +1,3 @@
-.toolbar-empleado {
-}
-
 .tile .tile-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%; }
 .toolbar-empleado {
   --background: #044C63;
@@ -127,7 +124,7 @@
 
 .tile span { color: #044C63; font-weight: 600; font-size: 12px; }
 
-.btn-nuevo-proyecto { --background: #044C63; margin: 6px 4px 12px; color: #FFFFFF } 
+.btn-nuevo-proyecto { --background: #044C63; margin: 6px 4px 12px; color: #FFFFFF; } 
 .btn-nuevo-proyecto ion-icon { --color: #FFFFFF; color: #FFFFFF; }
 
 .seg-proyectos {
