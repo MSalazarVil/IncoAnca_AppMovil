@@ -28,6 +28,10 @@ export const routes: Routes = [
   {
     path: 'editar-cliente/:id',
     loadComponent: () => import('./pages/empleado/editar-cliente/editar-cliente.page').then( m => m.EditarClientePage)
+  },
+  {
+    path: 'proyecto',
+    loadComponent: () => import('./pages/empleado/proyecto/proyecto.page').then( m => m.ProyectoPage)
   }
 
 ];
