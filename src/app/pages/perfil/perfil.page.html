@@ -1,4 +1,4 @@
-﻿<ion-header>
+<ion-header>
   <ion-toolbar class="toolbar-perfil">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
@@ -26,14 +26,34 @@
         <div class="value">{{ nombre }}</div>
       </div>
       <div class="info-row">
+        <ion-icon name="mail-outline"></ion-icon>
+        <div class="label">Email</div>
+        <div class="value">{{ email }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="briefcase-outline"></ion-icon>
+        <div class="label">Cargo</div>
+        <div class="value">{{ cargo }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="call-outline"></ion-icon>
+        <div class="label">Teléfono</div>
+        <div class="value">{{ telefono }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <div class="label">Usuario</div>
+        <div class="value">{{ usuario }}</div>
+      </div>
+      <div class="info-row">
         <ion-icon name="id-card-outline"></ion-icon>
         <div class="label">Rol</div>
         <div class="value">{{ rol | titlecase }}</div>
       </div>
-  </div>
+    </div>
 
-  <div class="perfil-actions">
-      <ion-button fill="outline">
+    <div class="perfil-actions">
+      <ion-button fill="outline" (click)="goToEditProfile()">
         <ion-icon name="pencil-outline" slot="start"></ion-icon>
         Editar perfil
       </ion-button>
@@ -41,7 +61,7 @@
         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
         Cambiar contraseña
       </ion-button>
-  </div>
+    </div>
 
   <ion-button expand="block" color="danger" (click)="cerrarSesion()" class="btn-salir">
       Cerrar sesión

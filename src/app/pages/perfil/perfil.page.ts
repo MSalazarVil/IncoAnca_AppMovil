@@ -1,9 +1,10 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-perfil',
@@ -15,16 +16,22 @@ import { Router } from '@angular/router';
 export class PerfilPage implements OnInit {
   nombre = '';
   rol = '';
+  email = '';
+  cargo = '';
+  telefono = '';
+  usuario = '';
   empresa: any = null;
 
-  constructor(private router: Router, private firebase: FirebaseService) { }
+  constructor(private router: Router, private firebase: FirebaseService, private authService: AuthService) { }
 
   ngOnInit() {
-    const nombre = localStorage.getItem('nombre');
-    const rol = localStorage.getItem('rol');
-    this.nombre = nombre ? nombre : '';
-    this.rol = rol ? rol : '';
-    const userId = localStorage.getItem('userId') || '';
+    this.nombre = this.authService.getNameSnapshot() ?? '';
+    this.rol = this.authService.getRoleSnapshot() ?? '';
+    this.email = this.authService.getEmailSnapshot() ?? '';
+    this.cargo = this.authService.getCargoSnapshot() ?? '';
+    this.telefono = this.authService.getTelefonoSnapshot() ?? '';
+    this.usuario = this.authService.getUsuarioSnapshot() ?? '';
+    const userId = this.authService.getUserIdSnapshot();
 
     if (this.rol === 'cliente' && userId) {
       // Buscar empresa asociada al usuario en Firestore
@@ -42,10 +49,12 @@ export class PerfilPage implements OnInit {
   }
 
   cerrarSesion() {
-    localStorage.removeItem('nombre');
-    localStorage.removeItem('rol');
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 
+  goToEditProfile() {
+    this.router.navigate(['/perfil/crud-perfil']);
+  }
 }
 

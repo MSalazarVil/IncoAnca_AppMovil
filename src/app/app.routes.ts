@@ -22,6 +22,13 @@ export const routes: Routes = [
       import("./pages/perfil/perfil.page").then((m) => m.PerfilPage),
   },
   {
+    path: "perfil/crud-perfil",
+    loadComponent: () =>
+      import("./pages/perfil/crud-perfil/edit-profile.component").then(
+        (m) => m.EditProfileComponent
+      ),
+  },
+  {
     path: "add-cliente",
     loadComponent: () =>
       import("./pages/empleado/add-cliente/add-cliente.page").then(

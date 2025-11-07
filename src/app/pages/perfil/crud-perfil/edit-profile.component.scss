@@ -1,0 +1,133 @@
+.perfil-card {
+  background: var(--ion-color-light-contrast);
+  margin: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.perfil-top {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.avatar {
+  font-size: 60px;
+  margin-right: 15px;
+}
+
+.datos .nombre {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.datos .rol-pill {
+  background: var(--ion-color-secondary);
+  color: var(--ion-color-secondary-contrast);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.perfil-info {
+  padding: 15px 20px;
+  background: var(--ion-color-light);
+}
+
+.info-row,
+ion-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  --background: var(--ion-color-light);
+  --border-color: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+.info-row ion-icon {
+  font-size: 20px;
+  margin-right: 10px;
+  color: var(--ion-color-medium);
+}
+
+.info-row .label {
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  min-width: 80px;
+}
+
+.info-row .value {
+  color: var(--ion-color-medium-shade);
+  flex-grow: 1;
+}
+
+ion-item ion-input {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.perfil-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 20px;
+  border-top: 1px solid var(--ion-color-light-shade);
+  background: var(--ion-color-light);
+}
+
+.perfil-actions ion-button {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  font-size: 14px;
+}
+
+.btn-salir {
+  margin: 16px;
+}
+
+.empresa-card {
+  background: var(--ion-color-tertiary);
+  color: var(--ion-color-tertiary-contrast);
+  margin: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+}
+
+.empresa-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.empresa-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.empresa-row .label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.empresa-empty {
+  margin: 16px;
+  padding: 15px;
+  background: var(--ion-color-light);
+  border-radius: 10px;
+  text-align: center;
+  color: var(--ion-color-medium);
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: center;
+}

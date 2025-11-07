@@ -1,4 +1,4 @@
-﻿import { Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import {
   getFirestore,
   collection,
@@ -11,6 +11,7 @@ import {
   collectionGroup,
   getAggregateFromServer,
   count,
+  updateDoc,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { environment } from "../../environments/environment";
@@ -225,5 +226,37 @@ export class FirebaseService {
       console.error("Error al añadir proyecto a Firestore:", error);
       throw error;
     }
+  }
+
+  async verifyPassword(userId: string, password: string): Promise<boolean> {
+    try {
+      const userRef = doc(this.db, "Empleados", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData: any = userSnap.data();
+        return userData.password === password;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error verifying password:", error);
+      return false;
+    }
+  }
+
+  async updateUserData(userId: string, dataToUpdate: any): Promise<void> {
+    try {
+      const userRef = doc(this.db, "Empleados", userId);
+      await updateDoc(userRef, dataToUpdate);
+      console.log("User data updated successfully for userId:", userId);
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      throw error;
+    }
+  }
+
+  async getCompanyData(empresaId: string): Promise<any | null> {
+    if (!empresaId) return null;
+    return this.getEmpresaPorPath(empresaId);
   }
 }

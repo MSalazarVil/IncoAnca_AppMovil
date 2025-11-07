@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
 import { FirebaseService } from "../../services/firebase.service";
+import { AuthService } from "../../services/auth.service";
 
 interface UserResponse {
   username?: string;
@@ -28,7 +29,8 @@ export class LoginPage {
 
   constructor(
     private router: Router,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private authService: AuthService
   ) {}
 
   async login() {
@@ -61,11 +63,19 @@ export class LoginPage {
       this.contrasena = "";
     } else {
       // Asumimos que si el usuario existe en la colección Empleados, su rol es 'empleado'
-      localStorage.setItem("userId", user.id || "");
-      localStorage.setItem("nombre", user["nombre"] || this.usuario);
-      localStorage.setItem("rol", "empleado"); // Rol fijo como 'empleado'
-      localStorage.setItem("empresaAsociada", user.empresaAsociada || "");
+      this.authService.loginSuccess(
+        user.id || "",
+        user["nombre"] || this.usuario,
+        "empleado", // Rol fijo como 'empleado'
+        user.empresaAsociada || "",
+        user["email"] || "",
+        user["cargo"] || "",
+        user["telefono"] || "",
+        this.usuario
+      );
       this.router.navigate(["/home"], { replaceUrl: true });
     }
   }
+
+  // Added a comment to trigger recompile
 }

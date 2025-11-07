@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { FirebaseService } from "../../services/firebase.service";
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: "./home.page.html",
   styleUrls: ["./home.page.scss"],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterLink],
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class HomePage implements OnInit, OnDestroy {
   nombreUsuario = "";

@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/perfil"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEditing ? 'Editar Perfil' : 'Mi Perfil' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="perfil-card">
+    <div class="perfil-top">
+      <div class="avatar">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </div>
+      <div class="datos">
+        <div class="nombre">{{ nombre }}</div>
+        <div class="rol-pill">{{ rol | titlecase }}</div>
+      </div>
+    </div>
+
+    <!-- Vista de solo lectura -->
+    <div class="perfil-info" *ngIf="!isEditing">
+      <div class="info-row">
+        <ion-icon name="person-outline"></ion-icon>
+        <div class="label">Nombre</div>
+        <div class="value">{{ nombre }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="mail-outline"></ion-icon>
+        <div class="label">Email</div>
+        <div class="value">{{ email }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="briefcase-outline"></ion-icon>
+        <div class="label">Cargo</div>
+        <div class="value">{{ cargo }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="call-outline"></ion-icon>
+        <div class="label">Teléfono</div>
+        <div class="value">{{ telefono }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <div class="label">Usuario</div>
+        <div class="value">{{ usuario }}</div>
+      </div>
+      <div class="info-row">
+        <ion-icon name="id-card-outline"></ion-icon>
+        <div class="label">Rol</div>
+        <div class="value">{{ rol | titlecase }}</div>
+      </div>
+    </div>
+
+    <!-- Vista de edición -->
+    <div class="perfil-info" *ngIf="isEditing">
+      <ion-item>
+        <ion-input label="Nombre" labelPlacement="floating" [(ngModel)]="nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Email" labelPlacement="floating" type="email" [(ngModel)]="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Cargo" labelPlacement="floating" [(ngModel)]="cargo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Teléfono" labelPlacement="floating" type="tel" [(ngModel)]="telefono"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Usuario" labelPlacement="floating" [(ngModel)]="usuario"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Rol" labelPlacement="floating" [value]="rol | titlecase" readonly></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="perfil-actions">
+      <ion-button fill="outline" *ngIf="!isEditing" (click)="toggleEditMode()">
+        <ion-icon name="pencil-outline" slot="start"></ion-icon>
+        Editar perfil
+      </ion-button>
+      <ion-button fill="outline" *ngIf="isEditing" (click)="saveChanges()">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Guardar cambios
+      </ion-button>
+      <ion-button fill="outline" *ngIf="isEditing" (click)="cancelEdit()">
+        <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+        Cancelar
+      </ion-button>
+      <ion-button fill="outline" *ngIf="!isEditing">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        Cambiar contraseña
+      </ion-button>
+    </div>
+
+
+
+    <!-- Empresa asociada (solo clientes) -->
+    <div *ngIf="rol === 'cliente' && empresa" class="empresa-card">
+      <div class="empresa-title">Empresa</div>
+      <div class="empresa-row"><span class="label">Razón social</span><span class="value">{{ empresa.razonSocial }}</span></div>
+      <div class="empresa-row"><span class="label">RUC</span><span class="value">{{ empresa.ruc }}</span></div>
+      <div class="empresa-row"><span class="label">Dirección</span><span class="value">{{ empresa['direccion'] }}</span></div>
+      <div class="empresa-row"><span class="label">Teléfono</span><span class="value">{{ empresa.telefono }}</span></div>
+      <div class="empresa-row"><span class="label">Tipo</span><span class="value">{{ empresa.tipoEntidad }}</span></div>
+      <div class="empresa-row"><span class="label">Estado</span><span class="value">{{ empresa.estado | titlecase }}</span></div>
+      <div class="empresa-row"><span class="label">Registro</span><span class="value">{{ empresa.fechaRegistro }}</span></div>
+    </div>
+    <div *ngIf="rol === 'cliente' && !empresa" class="empresa-empty">Sin empresa asociada</div>
+  </div>
+
+  <!-- Prompt de contraseña para autenticación -->
+  <ion-modal [isOpen]="showPasswordPrompt" (willDismiss)="cancelAuthentication()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Autenticación</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancelAuthentication()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding ion-text-center">
+        <p style="color: black; font-size: 20px;">Modal de prueba</p>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

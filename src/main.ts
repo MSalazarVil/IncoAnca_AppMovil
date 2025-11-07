@@ -2,6 +2,8 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { importProvidersFrom } from '@angular/core';
+import { addIcons } from 'ionicons';
+import { idCardOutline, pencilOutline, lockClosedOutline } from 'ionicons/icons';
 
 import { provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
 import { initializeApp } from 'firebase/app';
@@ -25,4 +27,6 @@ bootstrapApplication(AppComponent, {
     { provide: 'firebaseApp', useValue: firebaseApp },
     { provide: 'firestore', useValue: firestore }
   ],
+}).then(() => {
+  addIcons({ idCardOutline, pencilOutline, lockClosedOutline });
 });
