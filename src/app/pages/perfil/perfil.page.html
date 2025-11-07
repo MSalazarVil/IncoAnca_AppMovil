@@ -14,8 +14,8 @@
         <ion-icon name="person-circle-outline"></ion-icon>
       </div>
       <div class="datos">
-        <div class="nombre">{{ nombre }}</div>
-        <div class="rol-pill">{{ rol | titlecase }}</div>
+        <div class="nombre">{{ user?.nombre || nombre }}</div>
+        <div class="rol-pill">{{ (user?.rol || rol) | titlecase }}</div>
       </div>
     </div>
 
@@ -23,12 +23,27 @@
       <div class="info-row">
         <ion-icon name="person-outline"></ion-icon>
         <div class="label">Nombre</div>
-        <div class="value">{{ nombre }}</div>
+        <div class="value">{{ user?.nombre || nombre }}</div>
       </div>
       <div class="info-row">
         <ion-icon name="id-card-outline"></ion-icon>
         <div class="label">Rol</div>
-        <div class="value">{{ rol | titlecase }}</div>
+        <div class="value">{{ (user?.rol || rol) | titlecase }}</div>
+      </div>
+      <div class="info-row" *ngIf="user?.username">
+        <ion-icon name="at-outline"></ion-icon>
+        <div class="label">Usuario</div>
+        <div class="value">{{ user?.username }}</div>
+      </div>
+      <div class="info-row" *ngIf="user?.email">
+        <ion-icon name="mail-outline"></ion-icon>
+        <div class="label">Email</div>
+        <div class="value">{{ user?.email }}</div>
+      </div>
+      <div class="info-row" *ngIf="user?.createdAt">
+        <ion-icon name="time-outline"></ion-icon>
+        <div class="label">Creado</div>
+        <div class="value">{{ user?.createdAt }}</div>
       </div>
   </div>
 
@@ -48,7 +63,7 @@
   </ion-button>
   
   <!-- Empresa asociada (solo clientes) -->
-  <div *ngIf="rol === 'cliente' && empresa" class="empresa-card">
+  <div *ngIf="(user?.rol || rol) === 'cliente' && empresa" class="empresa-card">
     <div class="empresa-title">Empresa</div>
     <div class="empresa-row"><span class="label">Razón social</span><span class="value">{{ empresa.razonSocial }}</span></div>
     <div class="empresa-row"><span class="label">RUC</span><span class="value">{{ empresa.ruc }}</span></div>
@@ -58,6 +73,6 @@
     <div class="empresa-row"><span class="label">Estado</span><span class="value">{{ empresa.estado | titlecase }}</span></div>
     <div class="empresa-row"><span class="label">Registro</span><span class="value">{{ empresa.fechaRegistro }}</span></div>
   </div>
-  <div *ngIf="rol === 'cliente' && !empresa" class="empresa-empty">Sin empresa asociada</div>
+  <div *ngIf="(user?.rol || rol) === 'cliente' && !empresa" class="empresa-empty">Sin empresa asociada</div>
 </div>
 </ion-content>

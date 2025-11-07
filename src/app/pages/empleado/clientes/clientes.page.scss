@@ -1,16 +1,43 @@
 /* Copiamos el estilo del toolbar del Perfil para mantener consistencia */
 .toolbar-perfil {
-  --background: #f6f6f6;
-  --color: #044C63;
-  --border-color: #d9d9d9;
-  --border-width: 0 0 1px 0;
+  --background: #04364A; /* nuevo fondo más oscuro */
+  --color: #EAF2F8;      /* texto claro */
+  --border-color: transparent;
+  --border-width: 0;
+}
+
+/* Estilo de cada item de cliente */
+.cliente-item {
+  --background: #F5FBFF;  /* fondo suave celeste */
+  --color: #0B3C5D;       /* texto principal */
+  --border-color: #D6EAF8;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin: 8px 12px;
+  --min-height: 64px;
+}
+
+.cliente-item ion-icon[slot="start"] {
+  color: #1F6CAB;
+}
+
+.cliente-item h2 { color: #0B3C5D; font-weight: 700; }
+.cliente-item p { color: #3E6E8C; margin-top: 2px; }
+
+/* Botones de acción */
+ion-button[color="primary"] {
+  --background: #1F6CAB;
+  --background-activated: #185482;
+  --background-focused: #185482;
+  --color: #ffffff;
+  border-radius: 10px;
 }
 
 /* Tarjeta de empresa (mismo look que Perfil) */
-.empresa-card { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); padding: 12px; margin: 6px 12px 12px; }
-.empresa-title { font-weight: 800; color: #262626; margin-bottom: 8px; }
-.empresa-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #e6e6e6; }
+.empresa-card { background: #ffffff; border: 1px solid #D6EAF8; border-radius: 12px; box-shadow: 0 2px 6px rgba(7, 64, 97, 0.08); padding: 12px; margin: 6px 12px 12px; }
+.empresa-title { font-weight: 800; color: #0B3C5D; margin-bottom: 8px; }
+.empresa-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #E5EEF6; }
 .empresa-row:last-child { border-bottom: 0; }
-.empresa-row .label { color: #6b6b6b; font-size: 12px; }
-.empresa-row .value { color: #262626; font-weight: 600; text-align: right; max-width: 60%; }
-.empresa-empty { margin: 6px 0; color: #6b6b6b; text-align: center; font-size: 14px; }
+.empresa-row .label { color: #5A7D95; font-size: 12px; }
+.empresa-row .value { color: #0B3C5D; font-weight: 600; text-align: right; max-width: 60%; }
+.empresa-empty { margin: 6px 0; color: #5A7D95; text-align: center; font-size: 14px; }

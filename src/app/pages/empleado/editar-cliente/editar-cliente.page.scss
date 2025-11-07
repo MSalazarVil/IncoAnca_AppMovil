@@ -1,4 +1,4 @@
-.toolbar-add {
+.toolbar-editar {
   --background: #04364A;
   --color: #EAF2F8;
 }
@@ -18,13 +18,9 @@ ion-item {
   margin-bottom: 10px;
 }
 
-.separador {
-  margin-top: 6px;
+.acciones {
+  margin-top: 16px;
 }
-
-.empresa-card { background: #ffffff; border: 1px solid #D6EAF8; border-radius: 12px; box-shadow: 0 2px 6px rgba(7, 64, 97, 0.08); padding: 12px; margin: 6px 0 0; }
-.empresa-title { font-weight: 800; color: #0B3C5D; margin-bottom: 8px; }
-.acciones { margin-top: 16px; }
 
 ion-button[color="primary"] {
   --background: #1F6CAB;
@@ -33,3 +29,6 @@ ion-button[color="primary"] {
   --color: #ffffff;
   border-radius: 10px;
 }
+
+.loading { text-align: center; color: #5A7D95; padding: 24px; }
+

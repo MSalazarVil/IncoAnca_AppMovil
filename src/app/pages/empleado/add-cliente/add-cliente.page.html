@@ -1,13 +1,76 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>addCliente</ion-title>
+<ion-header>
+  <ion-toolbar class="toolbar-add">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/clientes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Agregar Cliente</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">addCliente</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <form (ngSubmit)="guardar()" class="form-card">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="form.nombre" name="nombre" required placeholder="Nombre completo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input [(ngModel)]="form.email" name="email" type="email" required placeholder="correo@dominio.com"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Usuario</ion-label>
+      <ion-input [(ngModel)]="form.username" name="username" required placeholder="usuario"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Contraseña</ion-label>
+      <ion-input [(ngModel)]="form.password" name="password" type="password" required placeholder="••••••"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Empresa asociada (opcional)</ion-label>
+      <ion-select [(ngModel)]="form.empresaAsociada" name="empresaAsociada" [disabled]="crearEmpresa" interface="popover" placeholder="Seleccionar empresa">
+        <ion-select-option [value]="''">Ninguna</ion-select-option>
+        <ion-select-option *ngFor="let e of empresas" [value]="e.id">
+          {{ e.razonSocial || e.ruc || e.id }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div class="loading" *ngIf="cargandoEmpresas">Cargando empresas...</div>
+
+    <ion-item lines="none" class="separador">
+      <ion-label>Crear empresa asociada</ion-label>
+      <ion-toggle [(ngModel)]="crearEmpresa" name="crearEmpresa"></ion-toggle>
+    </ion-item>
+
+    <div *ngIf="crearEmpresa" class="empresa-card">
+      <div class="empresa-title">Empresa</div>
+      <ion-item>
+        <ion-label position="stacked">Razón social</ion-label>
+        <ion-input [(ngModel)]="empresa.razonSocial" name="razonSocial" required placeholder="RAZON S.A."></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">RUC</ion-label>
+        <ion-input [(ngModel)]="empresa.ruc" name="ruc" required placeholder="12345678901"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Dirección</ion-label>
+        <ion-input [(ngModel)]="empresa.direccion" name="direccion" placeholder="Calle 123"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Teléfono</ion-label>
+        <ion-input [(ngModel)]="empresa.telefono" name="telefono" type="tel" placeholder="999 999 999"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Tipo de entidad</ion-label>
+        <ion-input [(ngModel)]="empresa.tipoEntidad" name="tipoEntidad" placeholder="SA, SRL, etc."></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="acciones">
+      <ion-button expand="block" type="submit" [disabled]="guardando" color="primary">
+        <ion-spinner *ngIf="guardando" name="crescent" slot="start"></ion-spinner>
+        Crear cliente
+      </ion-button>
+    </div>
+  </form>
 </ion-content>

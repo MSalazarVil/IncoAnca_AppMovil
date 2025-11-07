@@ -16,34 +16,51 @@ export class PerfilPage implements OnInit {
   nombre = '';
   rol = '';
   empresa: any = null;
+  user: any = null;
 
   constructor(private router: Router, private firebase: FirebaseService) { }
 
-  ngOnInit() {
-    const nombre = localStorage.getItem('nombre');
-    const rol = localStorage.getItem('rol');
-    this.nombre = nombre ? nombre : '';
-    this.rol = rol ? rol : '';
+  async ngOnInit() {
     const userId = localStorage.getItem('userId') || '';
 
-    if (this.rol === 'cliente' && userId) {
-      // Buscar empresa asociada al usuario en Firestore
-      const empresaRef = localStorage.getItem('empresaAsociada') || '';
-      if (empresaRef) {
-        this.firebase.getEmpresaPorPath(empresaRef)
-          .then(emp => this.empresa = emp)
-          .catch(() => this.empresa = null);
-      } else {
-        this.firebase.getEmpresaPorRepresentante(userId)
-          .then(emp => this.empresa = emp)
-          .catch(() => this.empresa = null);
+    // Cargar datos del usuario desde Firestore
+    if (userId) {
+      try {
+        const perfil = await this.firebase.getPerfilCompleto(userId);
+        if (perfil?.user) {
+          this.user = perfil.user;
+          // Normalizar fecha si es Timestamp de Firestore
+          try {
+            const ca: any = (this.user as any)?.createdAt;
+            if (ca && typeof ca.toDate === 'function') {
+              this.user.createdAt = ca.toDate().toLocaleString();
+            }
+          } catch {}
+          this.nombre = perfil.user?.nombre || localStorage.getItem('nombre') || '';
+          this.rol = perfil.user?.rol || localStorage.getItem('rol') || '';
+          this.empresa = perfil.empresa || null;
+        } else {
+          // Fallback mínimo a localStorage
+          this.nombre = localStorage.getItem('nombre') || '';
+          this.rol = localStorage.getItem('rol') || '';
+        }
+      } catch {
+        this.nombre = localStorage.getItem('nombre') || '';
+        this.rol = localStorage.getItem('rol') || '';
+        this.empresa = null;
       }
+    } else {
+      // Si no hay userId, usar mínimos del localStorage
+      this.nombre = localStorage.getItem('nombre') || '';
+      this.rol = localStorage.getItem('rol') || '';
     }
   }
 
   cerrarSesion() {
     localStorage.removeItem('nombre');
     localStorage.removeItem('rol');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('empresaAsociada');
     this.router.navigate(['/login']);
   }
 

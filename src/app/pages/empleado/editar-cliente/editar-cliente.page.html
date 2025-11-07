@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar class="toolbar-editar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/clientes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Editar Cliente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="guardar()" class="form-card" *ngIf="!cargando; else cargandoTpl">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="form.nombre" name="nombre" placeholder="Nombre completo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input [(ngModel)]="form.email" name="email" type="email" placeholder="correo@dominio.com"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Usuario</ion-label>
+      <ion-input [(ngModel)]="form.username" name="username" placeholder="usuario"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Empresa asociada (id o ruta)</ion-label>
+      <ion-input [(ngModel)]="form.empresaAsociada" name="empresaAsociada" placeholder="/empresas/abc123 o abc123"></ion-input>
+    </ion-item>
+
+    <div class="acciones">
+      <ion-button expand="block" type="submit" [disabled]="guardando" color="primary">
+        <ion-spinner *ngIf="guardando" name="crescent" slot="start"></ion-spinner>
+        Guardar cambios
+      </ion-button>
+    </div>
+  </form>
+
+  <ng-template #cargandoTpl>
+    <div class="loading">Cargando datos del cliente...</div>
+  </ng-template>
+</ion-content>
+

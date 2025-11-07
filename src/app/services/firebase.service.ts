@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { getFirestore, collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, where, doc, getDoc, setDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment';
 
@@ -30,6 +30,80 @@ export class FirebaseService {
     }
     // Devolver datos con id
     return { id: d.id, ...userData } as any;
+  }
+
+  async getUserById(userId: string) {
+    if (!userId) return null;
+    const ref = doc(this.db, 'users', userId);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as any;
+  }
+
+  async getPerfilCompleto(userId: string) {
+    const user = await this.getUserById(userId);
+    if (!user) return null;
+    let empresa: any = null;
+    try {
+      if (user.rol === 'cliente') {
+        empresa = await this.getEmpresaDeCliente(user);
+      }
+    } catch {
+      empresa = null;
+    }
+    return { user, empresa } as any;
+  }
+
+  async updateUser(userId: string, data: any) {
+    if (!userId || !data) return false;
+    const ref = doc(this.db, 'users', userId);
+    // Usamos set con merge para no pisar campos no editados
+    try {
+      await setDoc(ref, data, { merge: true });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async createCliente(data: { nombre: string; email: string; username: string; password: string; empresaAsociada?: string }) {
+    const usersCol = collection(this.db, 'users');
+    const payload: any = {
+      nombre: data.nombre,
+      email: data.email,
+      username: data.username,
+      password: data.password,
+      rol: 'cliente',
+      createdAt: serverTimestamp()
+    };
+    if (data.empresaAsociada) payload.empresaAsociada = data.empresaAsociada;
+    const ref = await addDoc(usersCol, payload);
+    return { id: ref.id, ...payload } as any;
+  }
+
+  async createEmpresaAsociadaForCliente(clienteId: string, empresa: { razonSocial: string; ruc: string; direccion?: string; telefono?: string; tipoEntidad?: string }) {
+    if (!clienteId) throw new Error('clienteId requerido');
+    const empresasCol = collection(this.db, 'empresas');
+    const payload: any = {
+      razonSocial: empresa.razonSocial,
+      ruc: empresa.ruc,
+      representante: clienteId,
+      estado: 'activo',
+      fechaRegistro: serverTimestamp(),
+    };
+    if (empresa.direccion) payload.direccion = empresa.direccion; // usamos 'direccion' (sin acento) para coincidir con la UI
+    if (empresa.telefono) payload.telefono = empresa.telefono;
+    if (empresa.tipoEntidad) payload.tipoEntidad = empresa.tipoEntidad;
+    const ref = await addDoc(empresasCol, payload);
+    // guardar referencia en el usuario
+    await this.updateUser(clienteId, { empresaAsociada: ref.id });
+    return { id: ref.id, ...payload } as any;
+  }
+
+  async listEmpresas() {
+    const empresasRef = collection(this.db, 'empresas');
+    const snap = await getDocs(empresasRef);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   }
 
   // Nuevo modelo: 'representante' guarda el userId directamente

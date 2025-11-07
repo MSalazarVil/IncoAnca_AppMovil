@@ -16,15 +16,20 @@
 <ion-content>
   <ion-list>
     <ng-container *ngFor="let c of clientes">
-      <ion-item (click)="toggleCliente(c)">
+      <ion-item class="cliente-item" (click)="toggleCliente(c)">
         <ion-icon name="person-circle-outline" slot="start"></ion-icon>
         <ion-label>
           <h2>{{ c.nombre || c.username || 'Cliente' }}</h2>
           <p>{{ c.username }}</p>
         </ion-label>
-        <ion-button fill="clear" slot="end">
-          <ion-icon [name]="expanded[c.id] ? 'chevron-up' : 'chevron-down'"></ion-icon>
-        </ion-button>
+        <ion-buttons slot="end">
+          <ion-button color="medium" fill="clear" (click)="$event.stopPropagation(); toggleCliente(c)">
+            <ion-icon [name]="expanded[c.id] ? 'chevron-up' : 'chevron-down'"></ion-icon>
+          </ion-button>
+          <ion-button color="primary" fill="solid" [routerLink]="['/editar-cliente', c.id]" (click)="$event.stopPropagation()">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-item>
 
       <div class="empresa-card" *ngIf="expanded[c.id]">
