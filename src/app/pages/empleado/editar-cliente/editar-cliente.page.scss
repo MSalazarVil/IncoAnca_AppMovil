@@ -17,15 +17,34 @@ ion-item {
   border-radius: 10px;
   margin-bottom: 10px;
 }
+ion-item ion-label {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #004c63 !important;
+}
+ion-item ion-label::part(text) {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #004c63 !important;
+}
+ion-item ion-input {
+  --color: #262626;        /* texto */
+  --placeholder-color: #9ea3a6; 
+  --highlight-color: transparent;
+}
+
+ion-item ion-input::part(native) {
+  color: #262626 !important;
+}
 
 .acciones {
   margin-top: 16px;
 }
 
 ion-button[color="primary"] {
-  --background: #1F6CAB;
-  --background-activated: #185482;
-  --background-focused: #185482;
+  --background: #004c63;
+  --background-activated: #004c63;
+  --background-focused: #004c63;
   --color: #ffffff;
   border-radius: 10px;
 }

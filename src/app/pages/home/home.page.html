@@ -55,9 +55,11 @@
       Agregar un nuevo proyecto
     </ion-button>
 
+    <h3>Proyectos</h3>
+
     <ion-segment [(ngModel)]="segment" class="seg-proyectos">
-      <ion-segment-button value="activos">Proyectos Activos</ion-segment-button>
-      <ion-segment-button value="terminados">Proyectos Terminados</ion-segment-button>
+      <ion-segment-button value="activos">Activos</ion-segment-button>
+      <ion-segment-button value="terminados">Terminados</ion-segment-button>
     </ion-segment>
 
     <div class="lista-titulo">Lista de proyectos {{ segment }}</div>

@@ -10,8 +10,6 @@
 /* Contención de ancho para móviles: 95% del viewport */
 
 
-
-
 .toolbar-cliente {
   --background: #4CAF50;
   --color: #ffffff;
@@ -153,6 +151,11 @@
   border-right: none;
   border-radius: 0 !important;
   margin-left: -1px; /* evita borde doble entre botones */
+}
+
+h3 {
+  color: #044C63;
+  text-align: center;
 }
 
 /* Quitar subrayado/realce por foco en botones del segmento */
