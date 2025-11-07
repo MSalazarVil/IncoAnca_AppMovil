@@ -30,11 +30,15 @@ export const routes: Routes = [
   {
     path: 'editar-cliente/:id',
 <<<<<<< HEAD
+<<<<<<< HEAD
     loadComponent: () => import('./pages/empleado/editar-cliente/editar-cliente.page').then(m => m.EditarClientePage)
   },
   {
     path: 'proyecto',
     loadComponent: () => import('./pages/empleado/proyecto/proyecto.page').then(m => m.ProyectoPage)
+=======
+    loadComponent: () => import('./pages/empleado/editar-cliente/editar-cliente.page').then( m => m.EditarClientePage)
+>>>>>>> parent of f4e9f80 (Nueva carpeta - empleado/proyecto)
 =======
     loadComponent: () => import('./pages/empleado/editar-cliente/editar-cliente.page').then( m => m.EditarClientePage)
 >>>>>>> parent of f4e9f80 (Nueva carpeta - empleado/proyecto)
