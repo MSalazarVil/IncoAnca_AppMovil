@@ -33,3 +33,19 @@ ion-button[color="primary"] {
   --color: #ffffff;
   border-radius: 10px;
 }
+
+/* Color de etiquetas en el formulario Add Cliente */
+ion-label {
+  color: #044C63 !important;
+}
+
+/* Color del texto de los ion-input */
+ion-input {
+  --color: #262626 !important;
+}
+
+/* (revertido) color del texto del select por defecto */
+/* Color del valor seleccionado en el select de Empresa */
+.form-card ion-select {
+  --color: #262626 !important;
+}

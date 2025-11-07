@@ -46,4 +46,10 @@ export class ClientesPage implements OnInit {
     }
   }
 
+  initial(c: any): string {
+    const s = (c?.nombre || c?.username || 'C');
+    const ch = (typeof s === 'string' && s.length > 0) ? s.charAt(0) : 'C';
+    return ch.toUpperCase();
+  }
+
 }
