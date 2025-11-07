@@ -53,6 +53,7 @@ export class HomePage implements OnInit {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Progreso: 4 etapas fijas; +25% por cada una con estado 'completo'.
   private calcularProgreso(p: any) {
     const etapas = p?.etapas || {};
@@ -155,6 +156,33 @@ export class HomePage implements OnInit {
       titulo: p?.nombre || 'Proyecto',
       estado,
 >>>>>>> parent of b59a6e5 (RS)
+=======
+  // Determina el estado visible (etapa actual) y el progreso: 25% por etapa
+  private calcularEstadoYProgreso(p: any) {
+    const etapas = p?.etapas || {};
+    const stages = [
+      { key: 'perfil', label: 'Perfil' },
+      { key: 'evaluacionPerfil', label: 'Evaluacion de Perfil' },
+      { key: 'etapa3', label: 'Etapa 3' },
+      { key: 'etapa4', label: 'Etapa 4' },
+    ];
+    const total = stages.length;
+    const firstPendingIndex = stages.findIndex(s => !this.etapaCompleta(etapas?.[s.key]?.estado));
+    if (firstPendingIndex === -1) {
+      return { estado: 'Finalizado', progreso: 1 };
+    }
+    const progreso = firstPendingIndex / total; // 0, .25, .5, .75
+    const estado = stages[firstPendingIndex]?.label || 'En proceso';
+    return { estado, progreso };
+  }
+
+  private mapProyectoToCard(p: any) {
+    const { estado, progreso } = this.calcularEstadoYProgreso(p);
+    return {
+      id: p.id,
+      titulo: p?.nombre || 'Proyecto',
+      estado,
+>>>>>>> parent of 0f3b989 (Reapply "RS")
 =======
   // Determina el estado visible (etapa actual) y el progreso: 25% por etapa
   private calcularEstadoYProgreso(p: any) {
