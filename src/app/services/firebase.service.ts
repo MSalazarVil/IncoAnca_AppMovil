@@ -145,4 +145,26 @@ export class FirebaseService {
     }
     try { return await this.getEmpresaPorRepresentante(cliente.id); } catch { return null; }
   }
+
+  // Proyectos
+  async listProyectos() {
+    const proyectosRef = collection(this.db, 'proyectos');
+    const snap = await getDocs(proyectosRef);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  }
+
+  async listProyectosPorEmpresa(empresaId: string) {
+    if (!empresaId) return [] as any[];
+    const proyectosRef = collection(this.db, 'proyectos');
+    // Algunos documentos pueden guardar el path completo, otros solo el id
+    const qById = query(proyectosRef, where('empresaAsociada', '==', empresaId));
+    const qByPath = query(proyectosRef, where('empresaAsociada', '==', `empresas/${empresaId}`));
+    const [snapId, snapPath] = await Promise.all([getDocs(qById), getDocs(qByPath)]);
+    const all = [...snapId.docs, ...snapPath.docs];
+    const uniq = new Map<string, any>();
+    all.forEach(d => {
+      if (!uniq.has(d.id)) uniq.set(d.id, { id: d.id, ...d.data() });
+    });
+    return Array.from(uniq.values());
+  }
 }

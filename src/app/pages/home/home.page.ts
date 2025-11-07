@@ -1,8 +1,9 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-home',
@@ -11,31 +12,24 @@ import { Router, RouterLink } from '@angular/router';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterLink],
 })
-
 export class HomePage implements OnInit {
   nombre = '';
   rol = '';
   segment = 'activos';
   buscar = '';
-  activos = [
-    { titulo: 'Puente Río Claro', estado: 'Planificación', progreso: 0.25, obs: 2 },
-    { titulo: 'Puente Río Claro', estado: 'Planificación', progreso: 0.25, obs: 2 },
-  ];
-  terminados = [
-    { titulo: 'Edificio Administrativo', estado: 'Finalizado' },
-    { titulo: 'Carretera Principal Tramo A', estado: 'Finalizado' },
-  ];
-  
-  constructor(private router: Router) {}
+  activos: any[] = [];
+  terminados: any[] = [];
+
+  constructor(private router: Router, private firebase: FirebaseService) {}
 
   ngOnInit() {
-    // Recuperamos el nombre del usuario almacenado en localStorage (desde el login)
     const nombre = localStorage.getItem('nombre');
     this.nombre = nombre ? nombre : 'Empleado';
 
-    // Recuperamos el rol del usuario (empleado | cliente)
     const rol = localStorage.getItem('rol');
     this.rol = rol ? rol : 'empleado';
+
+    this.cargarProyectos();
   }
 
   abrirPerfil() {
@@ -50,7 +44,60 @@ export class HomePage implements OnInit {
     const parts = n.split(/\s+/);
     return parts[0] || n;
   }
+
+  private etapaCompleta(estado: any) {
+    return String(estado || '').toLowerCase() === 'completo';
+  }
+
+  // Determina el estado visible (etapa actual) y el progreso: 25% por etapa
+  private calcularEstadoYProgreso(p: any) {
+    const etapas = p?.etapas || {};
+    const stages = [
+      { key: 'perfil', label: 'Perfil' },
+      { key: 'evaluacionPerfil', label: 'Evaluacion de Perfil' },
+      { key: 'etapa3', label: 'Etapa 3' },
+      { key: 'etapa4', label: 'Etapa 4' },
+    ];
+    const total = stages.length;
+    const firstPendingIndex = stages.findIndex(s => !this.etapaCompleta(etapas?.[s.key]?.estado));
+    if (firstPendingIndex === -1) {
+      return { estado: 'Finalizado', progreso: 1 };
+    }
+    const progreso = firstPendingIndex / total; // 0, .25, .5, .75
+    const estado = stages[firstPendingIndex]?.label || 'En proceso';
+    return { estado, progreso };
+  }
+
+  private mapProyectoToCard(p: any) {
+    const { estado, progreso } = this.calcularEstadoYProgreso(p);
+    return {
+      id: p.id,
+      titulo: p?.nombre || 'Proyecto',
+      estado,
+      progreso,
+      obs: p?.observacionesCount || 0,
+      empresaAsociada: p?.empresaAsociada || ''
+    };
+  }
+
+  private async cargarProyectos() {
+    try {
+      const empresaId = localStorage.getItem('empresaAsociada') || '';
+      let proyectos: any[] = [];
+      if (this.rol === 'cliente' && empresaId) {
+        proyectos = await this.firebase.listProyectosPorEmpresa(empresaId);
+      } else {
+        proyectos = await this.firebase.listProyectos();
+      }
+
+      const cards = proyectos.map(p => this.mapProyectoToCard(p));
+      const esTerminado = (c: any) => c.progreso >= 1;
+      this.terminados = cards.filter(esTerminado);
+      this.activos = cards.filter(c => !esTerminado(c));
+    } catch {
+      this.activos = [];
+      this.terminados = [];
+    }
+  }
 }
-
-
 
