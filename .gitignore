@@ -69,3 +69,4 @@ testem.log
 .DS_Store
 Thumbs.db
 src/app/pages/home/home.page.ts
+*.ts
