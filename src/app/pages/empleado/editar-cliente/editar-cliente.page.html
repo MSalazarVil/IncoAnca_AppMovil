@@ -22,9 +22,15 @@
       <ion-input [(ngModel)]="form.username" name="username" placeholder="usuario"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Empresa asociada (id o ruta)</ion-label>
-      <ion-input [(ngModel)]="form.empresaAsociada" name="empresaAsociada" placeholder="/empresas/abc123 o abc123"></ion-input>
+      <ion-label position="stacked">Empresa asociada (opcional)</ion-label>
+      <ion-select [(ngModel)]="form.empresaAsociada" name="empresaAsociada" interface="popover" placeholder="Seleccionar empresa">
+        <ion-select-option [value]="''">Ninguna</ion-select-option>
+        <ion-select-option *ngFor="let e of empresas" [value]="e.id">
+          {{ e.razonSocial || e.ruc || e.id }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
+    <div class="loading" *ngIf="cargandoEmpresas">Cargando empresas...</div>
 
     <div class="acciones">
       <ion-button expand="block" type="submit" [disabled]="guardando" color="primary">
@@ -38,4 +44,3 @@
     <div class="loading">Cargando datos del cliente...</div>
   </ng-template>
 </ion-content>
-

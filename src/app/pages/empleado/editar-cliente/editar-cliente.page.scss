@@ -37,6 +37,11 @@ ion-item ion-input::part(native) {
   color: #262626 !important;
 }
 
+.form-card ion-select {
+  --color: #262626 !important; /* color del texto seleccionado */
+  --placeholder-color: #9EA3A6 !important; /* color del placeholder */
+}
+
 .acciones {
   margin-top: 16px;
 }

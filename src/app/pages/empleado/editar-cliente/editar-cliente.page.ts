@@ -22,6 +22,8 @@ export class EditarClientePage implements OnInit {
   };
   cargando = false;
   guardando = false;
+  empresas: any[] = [];
+  cargandoEmpresas = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,10 +45,21 @@ export class EditarClientePage implements OnInit {
         this.form.nombre = u.nombre || '';
         this.form.email = u.email || '';
         this.form.username = u.username || '';
-        this.form.empresaAsociada = u.empresaAsociada || '';
+        const pathOrId = u.empresaAsociada || '';
+        this.form.empresaAsociada = pathOrId
+          ? (pathOrId.includes('/') ? pathOrId.split('/').filter(Boolean)[1] : pathOrId)
+          : '';
       }
     } finally {
       this.cargando = false;
+    }
+
+    // Cargar lista de empresas para mostrar el nombre en el selector
+    this.cargandoEmpresas = true;
+    try {
+      this.empresas = await this.firebase.listEmpresas();
+    } finally {
+      this.cargandoEmpresas = false;
     }
   }
 
@@ -72,4 +85,3 @@ export class EditarClientePage implements OnInit {
     await t.present();
   }
 }
-

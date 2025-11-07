@@ -49,32 +49,117 @@ export class HomePage implements OnInit {
     return String(estado || '').toLowerCase() === 'completo';
   }
 
-  // Progreso: 25% por etapa con estado 'completo'. Estado mostrado: estadoActual del proyecto.
+<<<<<<< HEAD
+<<<<<<< HEAD
+  // Progreso: 4 etapas fijas; +25% por cada una con estado 'completo'.
   private calcularProgreso(p: any) {
     const etapas = p?.etapas || {};
-    const keys = Object.keys(etapas);
-    const totalEtapas = 4;
-    if (!keys.length) return 0;
+    const etapasFijas = ['perfil', 'evaluacionPerfil', 'estudioFactibilidad', 'declaracionViabilidad'];
+    const totalEtapas = etapasFijas.length; // 4
     let completas = 0;
-    keys.forEach(k => {
-      const e = etapas[k];
+    etapasFijas.forEach((k) => {
+      const e = etapas?.[k];
       if (this.etapaCompleta(e?.estado)) completas += 1;
     });
     if (completas > totalEtapas) completas = totalEtapas;
-    return completas * (1 / totalEtapas);
+    return completas / totalEtapas;
   }
 
   private mapProyectoToCard(p: any) {
     const progreso = this.calcularProgreso(p);
-    const estadoActual = (p?.estadoActual || '').toString();
+    const estadoActual = this.getEstadoActual(p);
     return {
       id: p.id,
       titulo: p?.nombre || 'Proyecto',
-      estado: estadoActual ? estadoActual.charAt(0).toUpperCase() + estadoActual.slice(1) : 'En proceso',
+      estado: estadoActual || 'En proceso',
+=======
+  // Determina el estado visible (etapa actual) y el progreso: 25% por etapa
+  private calcularEstadoYProgreso(p: any) {
+    const etapas = p?.etapas || {};
+    const stages = [
+      { key: 'perfil', label: 'Perfil' },
+      { key: 'evaluacionPerfil', label: 'Evaluacion de Perfil' },
+      { key: 'etapa3', label: 'Etapa 3' },
+      { key: 'etapa4', label: 'Etapa 4' },
+    ];
+    const total = stages.length;
+    const firstPendingIndex = stages.findIndex(s => !this.etapaCompleta(etapas?.[s.key]?.estado));
+    if (firstPendingIndex === -1) {
+      return { estado: 'Finalizado', progreso: 1 };
+    }
+    const progreso = firstPendingIndex / total; // 0, .25, .5, .75
+    const estado = stages[firstPendingIndex]?.label || 'En proceso';
+    return { estado, progreso };
+  }
+
+  private mapProyectoToCard(p: any) {
+    const { estado, progreso } = this.calcularEstadoYProgreso(p);
+    return {
+      id: p.id,
+      titulo: p?.nombre || 'Proyecto',
+      estado,
+>>>>>>> parent of b59a6e5 (RS)
+=======
+  // Determina el estado visible (etapa actual) y el progreso: 25% por etapa
+  private calcularEstadoYProgreso(p: any) {
+    const etapas = p?.etapas || {};
+    const stages = [
+      { key: 'perfil', label: 'Perfil' },
+      { key: 'evaluacionPerfil', label: 'Evaluacion de Perfil' },
+      { key: 'etapa3', label: 'Etapa 3' },
+      { key: 'etapa4', label: 'Etapa 4' },
+    ];
+    const total = stages.length;
+    const firstPendingIndex = stages.findIndex(s => !this.etapaCompleta(etapas?.[s.key]?.estado));
+    if (firstPendingIndex === -1) {
+      return { estado: 'Finalizado', progreso: 1 };
+    }
+    const progreso = firstPendingIndex / total; // 0, .25, .5, .75
+    const estado = stages[firstPendingIndex]?.label || 'En proceso';
+    return { estado, progreso };
+  }
+
+  private mapProyectoToCard(p: any) {
+    const { estado, progreso } = this.calcularEstadoYProgreso(p);
+    return {
+      id: p.id,
+      titulo: p?.nombre || 'Proyecto',
+      estado,
+>>>>>>> parent of b59a6e5 (RS)
       progreso,
       obs: p?.observacionesCount || 0,
       empresaAsociada: p?.empresaAsociada || ''
     };
+  }
+
+  private getEstadoActual(p: any) {
+    const etapas = p?.etapas || {};
+    const orden = [
+      { key: 'perfil', label: 'Perfil' },
+      { key: 'evaluacionPerfil', label: 'Evaluación de Perfil' },
+      { key: 'estudioFactibilidad', label: 'Estudio de Factibilidad' },
+      { key: 'declaracionViabilidad', label: 'Declaración de Viabilidad' },
+    ];
+
+    // 1) Preferir la etapa que esté "en proceso"
+    for (const it of orden) {
+      const e = etapas?.[it.key];
+      const estado = (e?.estado || '').toString().toLowerCase();
+      if (estado === 'en proceso') return e?.nombreEtapa || it.label;
+    }
+
+    // 2) Si todas están completas, mostrar "Terminado"
+    const allComplete = orden.every(it => this.etapaCompleta(etapas?.[it.key]?.estado));
+    if (allComplete) return 'Terminado';
+
+    // 3) En otro caso, mostrar la próxima pendiente (no completa)
+    for (const it of orden) {
+      const e = etapas?.[it.key];
+      if (!this.etapaCompleta(e?.estado)) return e?.nombreEtapa || it.label;
+    }
+
+    // 4) Fallback
+    return 'En proceso';
   }
 
   private async cargarProyectos() {
@@ -97,3 +182,4 @@ export class HomePage implements OnInit {
     }
   }
 }
+
