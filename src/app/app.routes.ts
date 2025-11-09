@@ -12,4 +12,3 @@ export const routes: Routes = [
   // Nota: la página 'proyecto' no existe actualmente; cuando se cree, descomentar la ruta:
   // { path: 'proyecto', loadComponent: () => import('./pages/empleado/proyecto/proyecto.page').then(m => m.ProyectoPage) },
 ];
-
