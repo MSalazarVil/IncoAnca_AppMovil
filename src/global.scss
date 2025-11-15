@@ -36,24 +36,22 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
 
-// Fuente general
 * {
     font-family: "Inria Sans", sans-serif;
 }
 
-/* Limitar el ancho para pantallas móviles y centrar en pantallas grandes */
 :root {
-  --mobile-max-width: 420px; /* ancho máx. orientado a celulares */
+  --mobile-max-width: 420px; 
 }
 
 @media (min-width: 421px) {
   ion-router-outlet {
     max-width: var(--mobile-max-width);
     width: 100%;
-    margin: 0 auto; /* centra el área de la app */
+    margin: 0 auto; 
   }
 }
-/* Espaciado global y contenci�n del contenido */
+
 ion-content {
   overflow-x: hidden;
   --background: #f6f6f6;
@@ -64,10 +62,8 @@ ion-content {
   --padding-bottom: 16px;
 }
 
-/* Todos los elementos directos dentro de ion-content ocupan 95% */
 ion-content > * { width: 100%; max-width: 100%; margin-left: 0; margin-right: 0; }
 
-/* Evitar desbordes horizontales de cualquier hijo */
 ion-content * {
   box-sizing: border-box;
   max-width: 100%;

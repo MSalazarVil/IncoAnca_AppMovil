@@ -1,20 +1,19 @@
-/* Copiamos el estilo del toolbar del Perfil para mantener consistencia */
 .toolbar-perfil {
-  --background: #04364A; /* nuevo fondo más oscuro */
-  --color: #EAF2F8;      /* texto claro */
+  --background: #04364A; 
+  --color: #EAF2F8; 
   --border-color: transparent;
   --border-width: 0;
 }
 
 /* Estilo de cada item de cliente */
 .cliente-item {
-  --background: #ffffff;       /* fondo blanco */
-  --color: #0B3C5D;            /* texto principal */
-  border: 1px solid #E5EEF6;   /* borde suave */
+  --background: #ffffff; 
+  --color: #0B3C5D; 
+  border: 1px solid #E5EEF6; 
   border-radius: 12px;
   margin: 8px 12px;
   --min-height: 64px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* bordes sombreados */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); 
 }
 
 .cliente-item ion-icon[slot="start"] {
@@ -80,7 +79,7 @@ ion-list.lista-clientes {
   border-radius: 14px;
   margin: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden; /* redondear items en los bordes */
+  overflow: hidden; 
 }
 
 ion-list.lista-clientes ion-item {

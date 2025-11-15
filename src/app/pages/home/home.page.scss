@@ -110,7 +110,7 @@
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px; /* alto no automático con padding vertical */
+  padding: 10px 12px; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -127,30 +127,25 @@
 
 .seg-proyectos {
   margin: 6px 4px 8px;
-  /* Fondo del contenedor transparente y sin indicador */
   --background: transparent;
   --indicator-color: transparent;
   border-radius: 0;
 }
 
-/* Asegurar que no se muestre el indicador inferior del segmento */
 .seg-proyectos::part(indicator) {
   background: transparent;
   display: none;
 }
 
 .seg-proyectos ion-segment-button {
-  /* No seleccionado */
   --background: transparent;
   --color: #262626;
-  /* Seleccionado */
   --background-checked: #262626;
   --color-checked: #ffffff;
-  /* Borde visible en no seleccionado */
   border: 1px solid #262626;
   border-right: none;
   border-radius: 0 !important;
-  margin-left: -1px; /* evita borde doble entre botones */
+  margin-left: -1px; 
 }
 
 h3 {
@@ -169,8 +164,8 @@ h3 {
 .seg-proyectos ion-segment-button::part(native) {
   box-shadow: none;
   outline: none;
-  font-size: 14px;            /* tamaño de texto */
-  text-transform: capitalize;  /* primera letra mayúscula */
+  font-size: 14px;  
+  text-transform: capitalize; 
 }
 
 .seg-proyectos ion-segment-button:first-child { margin-left: 0; }
@@ -243,10 +238,7 @@ ion-button {
   justify-content: space-between;
 }
 
-  /* Fondo de contenido del Home */
-
-
-  /* Oculta botones extras en el header dejando solo el de perfil */
+/* Oculta botones extras en el header dejando solo el de perfil */
 .toolbar-home ion-buttons[slot="end"] ion-button:not(:last-child) {
   display: none;
 }

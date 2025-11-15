@@ -62,7 +62,7 @@
       Cerrar sesión
   </ion-button>
   
-  <!-- Empresa asociada (solo clientes) -->
+  <!-- empresa asociada a cliente -->
   <div *ngIf="(user?.rol || rol) === 'cliente' && empresa" class="empresa-card">
     <div class="empresa-title">Empresa</div>
     <div class="empresa-row"><span class="label">Razón social</span><span class="value">{{ empresa.razonSocial }}</span></div>

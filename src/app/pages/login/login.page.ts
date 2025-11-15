@@ -30,11 +30,9 @@ export class LoginPage {
   constructor(private router: Router, private firebaseService: FirebaseService) {}
 
   async login() {
-    // Limpiar errores anteriores
     this.errorUsuario = '';
     this.errorContrasena = '';
 
-    // Validar campos vacÃ­os antes de consultar al Firestore
     if (!this.usuario.trim() || !this.contrasena.trim()) {
       if (!this.usuario.trim()) {
         this.errorUsuario = 'Ingrese su usuario';

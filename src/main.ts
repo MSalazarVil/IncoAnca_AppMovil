@@ -11,7 +11,6 @@ import { environment } from './environments/environment';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
-// Iniciar firebase manualmente
 const firebaseApp = initializeApp(environment.firebaseConfig);
 const firestore = getFirestore(firebaseApp);
 
@@ -21,7 +20,7 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
 
-    // registro manual de las instancias de firebase
+    // instancias para firabase
     { provide: 'firebaseApp', useValue: firebaseApp },
     { provide: 'firestore', useValue: firestore }
   ],

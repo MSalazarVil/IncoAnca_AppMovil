@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
+
 export class PerfilPage implements OnInit {
   nombre = '';
   rol = '';
@@ -23,13 +24,13 @@ export class PerfilPage implements OnInit {
   async ngOnInit() {
     const userId = localStorage.getItem('userId') || '';
 
-    // Cargar datos del usuario desde Firestore
+    // cargar datos del usuario desde firabase
     if (userId) {
       try {
         const perfil = await this.firebase.getPerfilCompleto(userId);
         if (perfil?.user) {
           this.user = perfil.user;
-          // Normalizar fecha si es Timestamp de Firestore
+          
           try {
             const ca: any = (this.user as any)?.createdAt;
             if (ca && typeof ca.toDate === 'function') {
@@ -40,7 +41,6 @@ export class PerfilPage implements OnInit {
           this.rol = perfil.user?.rol || localStorage.getItem('rol') || '';
           this.empresa = perfil.empresa || null;
         } else {
-          // Fallback mínimo a localStorage
           this.nombre = localStorage.getItem('nombre') || '';
           this.rol = localStorage.getItem('rol') || '';
         }
@@ -50,7 +50,6 @@ export class PerfilPage implements OnInit {
         this.empresa = null;
       }
     } else {
-      // Si no hay userId, usar mínimos del localStorage
       this.nombre = localStorage.getItem('nombre') || '';
       this.rol = localStorage.getItem('rol') || '';
     }
@@ -63,6 +62,4 @@ export class PerfilPage implements OnInit {
     localStorage.removeItem('empresaAsociada');
     this.router.navigate(['/login']);
   }
-
 }
-

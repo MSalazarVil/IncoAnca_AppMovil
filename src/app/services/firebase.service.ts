@@ -1,5 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
-import { getFirestore, collection, getDocs, query, where, doc, getDoc, setDoc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { 
+  getFirestore, collection, getDocs, query, where, 
+  doc, getDoc, setDoc, addDoc, serverTimestamp 
+} from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment';
 
@@ -15,20 +18,20 @@ export class FirebaseService {
   async login(username: string, password: string) {
     const usuariosRef = collection(this.db, 'users');
 
-    // Validar si el usuario existe
+    // validar si un usuario existe
     const qUsuario = query(usuariosRef, where('username', '==', username));
     const usuarioSnapshot = await getDocs(qUsuario);
     if (usuarioSnapshot.empty) {
       return { error: 'usuario_no_encontrado' } as any;
     }
 
-    // Si el usuario existe, validamos la contraseña
+    // validar la contraseña del usuario si es que existe
     const d = usuarioSnapshot.docs[0];
     const userData: any = d.data();
     if (userData['password'] !== password) {
       return { error: 'contrasena_incorrecta' } as any;
     }
-    // Devolver datos con id
+
     return { id: d.id, ...userData } as any;
   }
 
@@ -57,7 +60,7 @@ export class FirebaseService {
   async updateUser(userId: string, data: any) {
     if (!userId || !data) return false;
     const ref = doc(this.db, 'users', userId);
-    // Usamos set con merge para no pisar campos no editados
+    
     try {
       await setDoc(ref, data, { merge: true });
       return true;
@@ -91,11 +94,11 @@ export class FirebaseService {
       estado: 'activo',
       fechaRegistro: serverTimestamp(),
     };
-    if (empresa.direccion) payload.direccion = empresa.direccion; // usamos 'direccion' (sin acento) para coincidir con la UI
+    if (empresa.direccion) payload.direccion = empresa.direccion; 
     if (empresa.telefono) payload.telefono = empresa.telefono;
     if (empresa.tipoEntidad) payload.tipoEntidad = empresa.tipoEntidad;
     const ref = await addDoc(empresasCol, payload);
-    // guardar referencia en el usuario
+    
     await this.updateUser(clienteId, { empresaAsociada: ref.id });
     return { id: ref.id, ...payload } as any;
   }
@@ -106,7 +109,7 @@ export class FirebaseService {
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   }
 
-  // Nuevo modelo: 'representante' guarda el userId directamente
+  // guardar representante como userId
   async getEmpresaPorRepresentante(userId: string) {
     if (!userId) return null;
     const empresasRef = collection(this.db, 'empresas');
@@ -117,7 +120,7 @@ export class FirebaseService {
     return { id: d.id, ...d.data() } as any;
   }
 
-  // Acepta id tipo "1k0m4..." o ruta "/empresas/1k0m4..."
+  // aceptar la ruta de una empresa relacionada a un cliente
   async getEmpresaPorPath(pathOrId: string) {
     if (!pathOrId) return null;
     const id = pathOrId.includes('/') ? pathOrId.split('/').filter(Boolean)[1] : pathOrId;
@@ -128,7 +131,7 @@ export class FirebaseService {
     return { id: snap.id, ...snap.data() } as any;
   }
 
-  // Listar usuarios con rol 'cliente'
+  // lista de usuarios con rol "cliente"
   async listClientes() {
     const usuariosRef = collection(this.db, 'users');
     const qCli = query(usuariosRef, where('rol', '==', 'cliente'));
@@ -136,7 +139,7 @@ export class FirebaseService {
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   }
 
-  // Obtener empresa asociada a un cliente por path/id o por representante
+  // obtener la empresa asociada a un cliente
   async getEmpresaDeCliente(cliente: any) {
     if (!cliente) return null;
     const path = cliente?.empresaAsociada || '';
@@ -146,7 +149,7 @@ export class FirebaseService {
     try { return await this.getEmpresaPorRepresentante(cliente.id); } catch { return null; }
   }
 
-  // Proyectos
+  // proyectos
   async listProyectos() {
     const proyectosRef = collection(this.db, 'proyectos');
     const snap = await getDocs(proyectosRef);
@@ -156,7 +159,7 @@ export class FirebaseService {
   async listProyectosPorEmpresa(empresaId: string) {
     if (!empresaId) return [] as any[];
     const proyectosRef = collection(this.db, 'proyectos');
-    // Algunos documentos pueden guardar el path completo, otros solo el id
+    
     const qById = query(proyectosRef, where('empresaAsociada', '==', empresaId));
     const qByPath = query(proyectosRef, where('empresaAsociada', '==', `empresas/${empresaId}`));
     const [snapId, snapPath] = await Promise.all([getDocs(qById), getDocs(qByPath)]);

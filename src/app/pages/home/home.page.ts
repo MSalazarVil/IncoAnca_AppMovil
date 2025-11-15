@@ -12,6 +12,7 @@ import { FirebaseService } from '../../services/firebase.service';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterLink],
 })
+
 export class HomePage implements OnInit {
   nombre = '';
   rol = '';
@@ -49,7 +50,6 @@ export class HomePage implements OnInit {
     return String(estado || '').toLowerCase() === 'completo';
   }
 
-  // Progreso: 25% por etapa con estado 'completo'. Estado mostrado: estadoActual del proyecto.
   private calcularProgreso(p: any) {
     const etapas = p?.etapas || {};
     const keys = Object.keys(etapas);
@@ -86,24 +86,20 @@ export class HomePage implements OnInit {
       { key: 'declaracionViabilidad', label: 'Declaración de Viabilidad' },
     ];
 
-    // 1) Preferir la etapa que esté "en proceso"
     for (const it of orden) {
       const e = etapas?.[it.key];
       const estado = (e?.estado || '').toString().toLowerCase();
       if (estado === 'en proceso') return e?.nombreEtapa || it.label;
     }
 
-    // 2) Si todas están completas, mostrar "Terminado"
     const allComplete = orden.every(it => this.etapaCompleta(etapas?.[it.key]?.estado));
     if (allComplete) return 'Terminado';
 
-    // 3) En otro caso, mostrar la próxima pendiente (no completa)
     for (const it of orden) {
       const e = etapas?.[it.key];
       if (!this.etapaCompleta(e?.estado)) return e?.nombreEtapa || it.label;
     }
 
-    // 4) Fallback
     return 'En proceso';
   }
 

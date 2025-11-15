@@ -12,6 +12,7 @@ import { FirebaseService } from '../../../services/firebase.service';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
+
 export class EditarClientePage implements OnInit {
   id = '';
   form: any = {
@@ -54,7 +55,6 @@ export class EditarClientePage implements OnInit {
       this.cargando = false;
     }
 
-    // Cargar lista de empresas para mostrar el nombre en el selector
     this.cargandoEmpresas = true;
     try {
       this.empresas = await this.firebase.listEmpresas();

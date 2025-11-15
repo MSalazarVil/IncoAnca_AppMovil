@@ -28,7 +28,7 @@ ion-item ion-label::part(text) {
   color: #004c63 !important;
 }
 ion-item ion-input {
-  --color: #262626;        /* texto */
+  --color: #262626;  
   --placeholder-color: #9ea3a6; 
   --highlight-color: transparent;
 }
@@ -38,8 +38,8 @@ ion-item ion-input::part(native) {
 }
 
 .form-card ion-select {
-  --color: #262626 !important; /* color del texto seleccionado */
-  --placeholder-color: #9EA3A6 !important; /* color del placeholder */
+  --color: #262626 !important; 
+  --placeholder-color: #9EA3A6 !important; 
 }
 
 .acciones {

@@ -12,6 +12,7 @@ import { FirebaseService } from '../../../services/firebase.service';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterLink]
 })
+
 export class ClientesPage implements OnInit {
   clientes: any[] = [];
   expanded: Record<string, boolean> = {};

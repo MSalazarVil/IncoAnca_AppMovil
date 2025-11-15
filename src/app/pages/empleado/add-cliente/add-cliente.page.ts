@@ -18,7 +18,7 @@ export class AddClientePage implements OnInit {
     email: '',
     username: '',
     password: '',
-    empresaAsociada: '' // opcional (id)
+    empresaAsociada: ''
   };
 
   crearEmpresa = false;
@@ -37,7 +37,6 @@ export class AddClientePage implements OnInit {
   constructor(private firebase: FirebaseService, private router: Router, private toastCtrl: ToastController) { }
 
   async ngOnInit() {
-    // Cargar lista de empresas para el desplegable
     this.cargandoEmpresas = true;
     try {
       this.empresas = await this.firebase.listEmpresas();
