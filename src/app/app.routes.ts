@@ -30,5 +30,9 @@ export const routes: Routes = [
   { 
     path: 'editar-cliente/:id', loadComponent: () => import('./pages/empleado/editar-cliente/editar-cliente.page')
     .then(m => m.EditarClientePage) 
+  },  {
+    path: 'ver-proyecto',
+    loadComponent: () => import('./pages/ver-proyecto/ver-proyecto.page').then( m => m.VerProyectoPage)
   },
+
 ];
