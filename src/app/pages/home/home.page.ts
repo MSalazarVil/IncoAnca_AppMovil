@@ -64,26 +64,42 @@ export class HomePage implements OnInit {
   }
 
   private calcularProgreso(p: any) {
+    const estadoActual = (p?.estadoActual || '').toString();
+    const keyEstado = estadoActual.replace(/\s+/g, '').toLowerCase();
+    const map: Record<string, number> = {
+      perfil: 0.2,
+      evaluacionperfil: 0.5,
+      estudiofactibilidad: 0.75,
+      declaracionviabilidad: 1,
+    };
+
+    const progresoEstado = map[keyEstado] ?? 0;
+    if (progresoEstado) return progresoEstado > 1 ? 1 : progresoEstado;
+
+    // Fallback: usa el estado de etapas si no hay coincidencia con estadoActual
     const etapas = p?.etapas || {};
-    const keys = Object.keys(etapas);
-    const totalEtapas = 4;
-    if (!keys.length) return 0;
-    let completas = 0;
-    keys.forEach(k => {
-      const e = etapas[k];
-      if (this.etapaCompleta(e?.estado)) completas += 1;
-    });
-    if (completas > totalEtapas) completas = totalEtapas;
-    return completas * (1 / totalEtapas);
+    const orden = [
+      { key: 'perfil', progreso: 0.2 },
+      { key: 'evaluacionPerfil', progreso: 0.5 },
+      { key: 'estudioFactibilidad', progreso: 0.75 },
+      { key: 'declaracionViabilidad', progreso: 1 },
+    ];
+    let progreso = 0;
+    for (const it of orden) {
+      const estado = (etapas?.[it.key]?.estado || '').toString().toLowerCase();
+      if (estado === 'en proceso') { progreso = it.progreso; break; }
+      if (estado === 'completo' || estado === 'completado') { progreso = it.progreso; continue; }
+      break;
+    }
+    return progreso > 1 ? 1 : progreso;
   }
 
   private mapProyectoToCard(p: any) {
     const progreso = this.calcularProgreso(p);
-    const estadoActual = (p?.estadoActual || '').toString();
     return {
       id: p.id,
       titulo: p?.nombre || 'Proyecto',
-      estado: estadoActual ? estadoActual.charAt(0).toUpperCase() + estadoActual.slice(1) : 'En proceso',
+      estado: this.getNombreEtapaActual(p),
       progreso,
       obs: p?.observacionesCount || 0,
       empresaAsociada: p?.empresaAsociada || ''
@@ -114,6 +130,39 @@ export class HomePage implements OnInit {
     }
 
     return 'En proceso';
+  }
+
+  private getNombreEtapaActual(p: any) {
+    const etapas = p?.etapas || {};
+    const estadoActual = (p?.estadoActual || '').toString();
+    const keyEstado = estadoActual.replace(/\s+/g, '').toLowerCase();
+    const mapKeyToEtapa: Record<string, string> = {
+      perfil: 'perfil',
+      evaluacionperfil: 'evaluacionPerfil',
+      estudiofactibilidad: 'estudioFactibilidad',
+      declaracionviabilidad: 'declaracionViabilidad',
+    };
+    const etapaKey = mapKeyToEtapa[keyEstado];
+
+    if (etapaKey && etapas?.[etapaKey]) {
+      return etapas[etapaKey].nombreEtapa || estadoActual || 'En proceso';
+    }
+
+    const orden = [
+      { key: 'perfil', label: 'Perfil' },
+      { key: 'evaluacionPerfil', label: 'Evaluacion de Perfil' },
+      { key: 'estudioFactibilidad', label: 'Estudio de Factibilidad' },
+      { key: 'declaracionViabilidad', label: 'Declaracion de Viabilidad' },
+    ];
+
+    for (const it of orden) {
+      const e = etapas?.[it.key];
+      const estado = (e?.estado || '').toString().toLowerCase();
+      if (estado === 'en proceso') return e?.nombreEtapa || it.label;
+      if (estado !== 'completo' && estado !== 'completado') return e?.nombreEtapa || it.label;
+    }
+
+    return estadoActual || 'En proceso';
   }
 
   private async cargarProyectos() {
