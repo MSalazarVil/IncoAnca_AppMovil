@@ -156,6 +156,26 @@ export class FirebaseService {
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   }
 
+  async createProyecto(data: { nombre: string; descripcion?: string; empresaAsociada: string; clienteAsociado: string }) {
+    const proyectosRef = collection(this.db, 'proyectos');
+    const payload: any = {
+      nombre: data.nombre,
+      descripcion: data.descripcion || '',
+      empresaAsociada: data.empresaAsociada,
+      clienteAsociado: data.clienteAsociado,
+      fechaCreacion: serverTimestamp(),
+      estadoActual: 'En proceso',
+      etapas: {
+        perfil: { nombreEtapa: 'Perfil', estado: 'En proceso' },
+        evaluacionPerfil: { nombreEtapa: 'Evaluacion de Perfil', estado: 'Pendiente' },
+        estudioFactibilidad: { nombreEtapa: 'Estudio de Factibilidad', estado: 'Pendiente' },
+        declaracionViabilidad: { nombreEtapa: 'Declaracion de Viabilidad', estado: 'Pendiente' }
+      }
+    };
+    const ref = await addDoc(proyectosRef, payload);
+    return { id: ref.id, ...payload };
+  }
+
   async listProyectosPorEmpresa(empresaId: string) {
     if (!empresaId) return [] as any[];
     const proyectosRef = collection(this.db, 'proyectos');

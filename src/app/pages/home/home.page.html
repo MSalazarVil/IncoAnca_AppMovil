@@ -50,7 +50,7 @@
         <span>Clientes</span></div></ion-button>
     </div>
 
-    <ion-button expand="block" class="btn-nuevo-proyecto">
+    <ion-button expand="block" class="btn-nuevo-proyecto" (click)="abrirModalProyecto()">
       <ion-icon slot="start" src="assets/icons/plus.svg"></ion-icon>
       Agregar un nuevo proyecto
     </ion-button>
@@ -152,3 +152,56 @@
     </ng-container>
 </ng-container>
 </ion-content>
+
+<ion-modal [isOpen]="modalProyectoAbierto" (didDismiss)="cerrarModalProyecto()" class="modal-proyecto">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Nuevo Proyecto</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrarModalProyecto()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form (ngSubmit)="guardarProyecto()" class="form-proyecto">
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input [(ngModel)]="formProyecto.nombre" name="nombreProyecto" placeholder="Nombre del proyecto" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Descripción</ion-label>
+          <ion-textarea [(ngModel)]="formProyecto.descripcion" name="descripcionProyecto" auto-grow="true" rows="3" placeholder="Detalle breve"></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Empresa asociada</ion-label>
+          <ion-select [(ngModel)]="formProyecto.empresaAsociada" name="empresaProyecto" interface="popover" placeholder="Selecciona una empresa" required>
+            <ion-select-option *ngFor="let e of empresas" [value]="e.id">{{ e.razonSocial || e.ruc || e.id }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div class="help-text" *ngIf="formProyecto.empresaAsociada">Solo se muestran clientes vinculados a esa empresa.</div>
+        <ion-item>
+          <ion-label position="stacked">Cliente asociado</ion-label>
+          <ion-select [(ngModel)]="formProyecto.clienteAsociado" name="clienteProyecto" interface="popover" placeholder="Selecciona un cliente" required>
+            <ion-select-option *ngFor="let c of clientesFiltrados" [value]="c.id">
+              {{ c.nombre || c.username || c.email || c.id }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div class="loading" *ngIf="cargandoOpciones">Cargando empresas y clientes...</div>
+        <div class="error" *ngIf="errorProyecto">{{ errorProyecto }}</div>
+
+        <div class="modal-acciones">
+          <ion-button fill="clear" type="button" (click)="cerrarModalProyecto()">Cancelar</ion-button>
+          <ion-button type="submit" [disabled]="guardandoProyecto" color="primary">
+            <ion-spinner *ngIf="guardandoProyecto" name="crescent" slot="start"></ion-spinner>
+            Guardar proyecto
+          </ion-button>
+        </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>

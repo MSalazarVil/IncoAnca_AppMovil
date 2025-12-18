@@ -20,6 +20,18 @@ export class HomePage implements OnInit {
   buscar = '';
   activos: any[] = [];
   terminados: any[] = [];
+  modalProyectoAbierto = false;
+  guardandoProyecto = false;
+  cargandoOpciones = false;
+  errorProyecto = '';
+  empresas: any[] = [];
+  clientes: any[] = [];
+  formProyecto: any = {
+    nombre: '',
+    descripcion: '',
+    empresaAsociada: '',
+    clienteAsociado: ''
+  };
 
   constructor(private router: Router, private firebase: FirebaseService) {}
 
@@ -31,6 +43,7 @@ export class HomePage implements OnInit {
     this.rol = rol ? rol : 'empleado';
 
     this.cargarProyectos();
+    this.cargarOpcionesProyecto();
   }
 
   abrirPerfil() {
@@ -120,6 +133,69 @@ export class HomePage implements OnInit {
     } catch {
       this.activos = [];
       this.terminados = [];
+    }
+  }
+
+  get clientesFiltrados() {
+    const emp = this.formProyecto.empresaAsociada;
+    if (!emp) return this.clientes;
+    return this.clientes.filter(c => {
+      const asociada = c?.empresaAsociada || '';
+      if (!asociada) return false;
+      if (asociada === emp) return true;
+      return asociada.endsWith(`/${emp}`);
+    });
+  }
+
+  async cargarOpcionesProyecto() {
+    this.cargandoOpciones = true;
+    try {
+      this.empresas = await this.firebase.listEmpresas();
+      this.clientes = await this.firebase.listClientes();
+    } catch {
+      this.empresas = [];
+      this.clientes = [];
+    } finally {
+      this.cargandoOpciones = false;
+    }
+  }
+
+  abrirModalProyecto() {
+    this.errorProyecto = '';
+    this.modalProyectoAbierto = true;
+  }
+
+  cerrarModalProyecto() {
+    this.modalProyectoAbierto = false;
+    this.errorProyecto = '';
+    this.guardandoProyecto = false;
+    this.formProyecto = { nombre: '', descripcion: '', empresaAsociada: '', clienteAsociado: '' };
+  }
+
+  private validoProyecto() {
+    return !!(this.formProyecto.nombre && this.formProyecto.empresaAsociada && this.formProyecto.clienteAsociado);
+  }
+
+  async guardarProyecto() {
+    if (!this.validoProyecto()) {
+      this.errorProyecto = 'Completa nombre, empresa y cliente';
+      return;
+    }
+    this.guardandoProyecto = true;
+    this.errorProyecto = '';
+    try {
+      await this.firebase.createProyecto({
+        nombre: this.formProyecto.nombre.trim(),
+        descripcion: (this.formProyecto.descripcion || '').trim(),
+        empresaAsociada: this.formProyecto.empresaAsociada,
+        clienteAsociado: this.formProyecto.clienteAsociado
+      });
+      this.cerrarModalProyecto();
+      await this.cargarProyectos();
+    } catch {
+      this.errorProyecto = 'No se pudo crear el proyecto';
+    } finally {
+      this.guardandoProyecto = false;
     }
   }
 }
