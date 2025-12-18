@@ -77,7 +77,7 @@
           </div>
           <div class="acciones">
             <div class="obs">Observaciones: <b>{{ p.obs }}</b></div>
-            <ion-button fill="clear" class="btn-ver-link">VER PROYECTO</ion-button>
+            <ion-button fill="clear" class="btn-ver-link" [routerLink]="['/ver-proyecto', p.id]">VER PROYECTO</ion-button>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@
               <div class="titulo">{{ p.titulo }}</div>
               <div class="estado estado-fin">{{ p.estado }}</div>
             </div>
-            <ion-button class="btn-ver" fill="solid">Ver Proyecto</ion-button>
+            <ion-button class="btn-ver" fill="solid" [routerLink]="['/ver-proyecto', p.id]">Ver Proyecto</ion-button>
           </div>
         </div>
       </div>

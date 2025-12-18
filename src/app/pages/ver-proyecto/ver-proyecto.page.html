@@ -1,13 +1,100 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>verProyecto</ion-title>
+<ion-header>
+  <ion-toolbar class="toolbar-proyecto">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Proyecto</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">verProyecto</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ng-container *ngIf="loading">
+    <div class="estado msj">Cargando proyecto...</div>
+  </ng-container>
+
+  <ng-container *ngIf="!loading && error">
+    <div class="estado error">{{ error }}</div>
+  </ng-container>
+
+  <ng-container *ngIf="!loading && proyecto">
+    <div class="titulo-proyecto">Proyecto: {{ (proyecto?.nombre || 'Proyecto') | uppercase }}</div>
+
+    <div class="card-info">
+      <div class="fila">
+        <span class="label">Cliente:</span>
+        <span class="valor">{{ cliente?.nombre || cliente?.username || 'Sin cliente' }}</span>
+      </div>
+      <div class="fila">
+        <span class="label">Fecha de inicio:</span>
+        <span class="valor">{{ fechaInicio | date:'dd/MM/yyyy' }}</span>
+      </div>
+      <div class="fila">
+        <span class="label">Empresa:</span>
+        <span class="valor">{{ empresa?.razonSocial || empresa?.ruc || proyecto?.empresaAsociada }}</span>
+      </div>
+      <div class="fila etapa-row">
+        <span class="label">Etapa:</span>
+        <span class="badge-etapa">{{ nombreEtapa }}</span>
+      </div>
+      <div class="progreso-row">
+        <span class="label">Progreso:</span>
+        <div class="progreso">
+          <ion-progress-bar [value]="progreso"></ion-progress-bar>
+          <span class="porc">{{ (progreso * 100) | number:'1.0-0' }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button [class.active]="segment==='documentos'" (click)="segment='documentos'">Documentos</button>
+      <button [class.active]="segment==='cliente'" (click)="segment='cliente'">Datos del cliente</button>
+    </div>
+
+    <div *ngIf="segment==='documentos'" class="panel">
+      <div class="panel-title">Documentos según cronograma</div>
+      <div class="card-doc">
+        <div class="doc-title">Cronograma</div>
+        <div class="doc-meta">Subido: {{ fechaInicio | date:'dd/MM/yyyy' }}</div>
+        <div class="doc-actions">
+          <ion-button fill="clear" size="small">Ver archivo</ion-button>
+          <ion-button fill="outline" size="small" color="medium">Actualizar archivo</ion-button>
+        </div>
+      </div>
+      <div class="obs">Observaciones: {{ proyecto?.observacionesCount || 0 }}</div>
+    </div>
+
+    <div *ngIf="segment==='cliente'" class="panel">
+      <div class="panel-title">Datos del cliente</div>
+      <div class="fila">
+        <span class="label">Nombre:</span>
+        <span class="valor">{{ cliente?.nombre || '-' }}</span>
+      </div>
+      <div class="fila">
+        <span class="label">Usuario:</span>
+        <span class="valor">{{ cliente?.username || '-' }}</span>
+      </div>
+      <div class="fila">
+        <span class="label">Email:</span>
+        <span class="valor">{{ cliente?.email || '-' }}</span>
+      </div>
+      <div class="fila">
+        <span class="label">Empresa:</span>
+        <span class="valor">{{ empresa?.razonSocial || '-' }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="isEmpleado" class="panel actualizar">
+      <div class="panel-title">Actualizar etapa</div>
+      <ion-item lines="none">
+        <ion-label position="stacked">Etapa actual</ion-label>
+        <ion-select [(ngModel)]="etapaSeleccionada" interface="popover">
+          <ion-select-option value="perfil">Perfil</ion-select-option>
+          <ion-select-option value="evaluacionPerfil">Evaluación de Perfil</ion-select-option>
+          <ion-select-option value="estudioFactibilidad">Estudio de Factibilidad</ion-select-option>
+          <ion-select-option value="declaracionViabilidad">Declaración de Viabilidad</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button expand="block" class="btn-actualizar" (click)="actualizarEtapa()">Actualizar etapa</ion-button>
+    </div>
+  </ng-container>
 </ion-content>

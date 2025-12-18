@@ -1,0 +1,176 @@
+.toolbar-proyecto {
+  --background: #f6f6f6;
+  --color: #044C63;
+  --border-color: #d9d9d9;
+  --border-width: 0 0 1px 0;
+}
+
+.titulo-proyecto {
+  font-weight: 800;
+  font-size: 18px;
+  margin: 6px 0 12px;
+  color: #044C63;
+  text-transform: uppercase;
+}
+
+.card-info {
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  margin-bottom: 14px;
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 6px;
+}
+
+.label {
+  color: #3a3a3a;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.valor {
+  color: #044C63;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+}
+
+.etapa-row {
+  align-items: center;
+}
+
+.badge-etapa {
+  border: 1px solid #044C63;
+  color: #044C63;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.progreso-row {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.progreso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progreso ion-progress-bar {
+  --progress-background: #4caf50;
+  --buffer-background: #e9e9e9;
+  height: 10px;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.porc {
+  color: #044C63;
+  font-weight: 700;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 4px 0 12px;
+  border: 1px solid #dcdcdc;
+}
+
+.tabs button {
+  background: #f4f4f4;
+  border: none;
+  padding: 10px;
+  font-weight: 700;
+  color: #3a3a3a;
+}
+
+.tabs button.active {
+  background: #044C63;
+  color: #fff;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.panel-title {
+  font-weight: 700;
+  color: #044C63;
+  margin-bottom: 8px;
+}
+
+.card-doc {
+  border: 1px solid #cfd8dc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.doc-title {
+  font-weight: 700;
+  color: #262626;
+  margin-bottom: 4px;
+}
+
+.doc-meta {
+  color: #6b6b6b;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.doc-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.obs {
+  color: #444;
+  font-weight: 600;
+}
+
+.actualizar ion-item {
+  --background: #f8f8f8;
+  --border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.btn-actualizar {
+  --background: #044C63;
+  color: #fff;
+}
+
+.estado {
+  padding: 12px;
+  border-radius: 10px;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: 700;
+}
+
+.estado.msj {
+  background: #e8f4fb;
+  color: #044C63;
+}
+
+.estado.error {
+  background: #fdecea;
+  color: #d93025;
+}

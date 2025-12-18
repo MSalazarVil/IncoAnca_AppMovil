@@ -156,6 +156,14 @@ export class FirebaseService {
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   }
 
+  async getProyectoById(id: string) {
+    if (!id) return null;
+    const ref = doc(this.db, 'proyectos', id);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...snap.data() } as any;
+  }
+
   async createProyecto(data: { nombre: string; descripcion?: string; empresaAsociada: string; clienteAsociado: string }) {
     const proyectosRef = collection(this.db, 'proyectos');
     const payload: any = {
@@ -189,5 +197,31 @@ export class FirebaseService {
       if (!uniq.has(d.id)) uniq.set(d.id, { id: d.id, ...d.data() });
     });
     return Array.from(uniq.values());
+  }
+
+  async updateProyectoEtapa(proyectoId: string, etapaKey: 'perfil' | 'evaluacionPerfil' | 'estudioFactibilidad' | 'declaracionViabilidad') {
+    if (!proyectoId || !etapaKey) throw new Error('proyectoId y etapaKey requeridos');
+    const ref = doc(this.db, 'proyectos', proyectoId);
+    const labels: any = {
+      perfil: 'Perfil',
+      evaluacionPerfil: 'Evaluacion de Perfil',
+      estudioFactibilidad: 'Estudio de Factibilidad',
+      declaracionViabilidad: 'Declaracion de Viabilidad'
+    };
+    const orden = ['perfil', 'evaluacionPerfil', 'estudioFactibilidad', 'declaracionViabilidad'];
+    const nuevasEtapas: any = {};
+    let reached = false;
+    for (const key of orden) {
+      if (key === etapaKey) {
+        nuevasEtapas[key] = { nombreEtapa: labels[key], estado: 'En proceso' };
+        reached = true;
+      } else if (!reached) {
+        nuevasEtapas[key] = { nombreEtapa: labels[key], estado: 'Completo' };
+      } else {
+        nuevasEtapas[key] = { nombreEtapa: labels[key], estado: 'Pendiente' };
+      }
+    }
+
+    await setDoc(ref, { estadoActual: labels[etapaKey], etapas: nuevasEtapas }, { merge: true });
   }
 }
